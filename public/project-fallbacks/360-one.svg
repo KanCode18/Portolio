@@ -1,0 +1,29 @@
+<svg width="1280" height="800" viewBox="0 0 1280 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1280" height="800" fill="#070A12"/>
+  <rect x="70" y="70" width="1140" height="660" rx="28" fill="#0F172A"/>
+  <rect x="70" y="70" width="1140" height="660" rx="28" stroke="#26344F" stroke-width="2"/>
+  <rect x="110" y="116" width="1060" height="74" rx="18" fill="#121D33"/>
+  <circle cx="151" cy="153" r="18" fill="#E6B85C"/>
+  <text x="185" y="163" fill="#F8FAFC" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">360 ONE</text>
+  <text x="1030" y="158" fill="#94A3B8" font-family="Arial, Helvetica, sans-serif" font-size="18">RM Workspace</text>
+  <rect x="110" y="226" width="300" height="190" rx="22" fill="#17233A"/>
+  <text x="142" y="282" fill="#94A3B8" font-family="Arial, Helvetica, sans-serif" font-size="20">Portfolio AUM</text>
+  <text x="142" y="346" fill="#F8FAFC" font-family="Arial, Helvetica, sans-serif" font-size="54" font-weight="700">100Cr+</text>
+  <path d="M144 378C183 352 207 397 247 368C282 342 309 331 376 356" stroke="#E6B85C" stroke-width="8" stroke-linecap="round"/>
+  <rect x="450" y="226" width="720" height="190" rx="22" fill="#111B2E"/>
+  <rect x="490" y="272" width="560" height="16" rx="8" fill="#334155"/>
+  <rect x="490" y="318" width="625" height="16" rx="8" fill="#475569"/>
+  <rect x="490" y="364" width="470" height="16" rx="8" fill="#334155"/>
+  <circle cx="1096" cy="326" r="46" fill="#E6B85C"/>
+  <text x="1070" y="335" fill="#0F172A" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700">RM</text>
+  <rect x="110" y="456" width="1060" height="218" rx="22" fill="#0B1222"/>
+  <rect x="150" y="500" width="220" height="126" rx="18" fill="#17233A"/>
+  <rect x="410" y="500" width="220" height="126" rx="18" fill="#17233A"/>
+  <rect x="670" y="500" width="220" height="126" rx="18" fill="#17233A"/>
+  <rect x="930" y="500" width="200" height="126" rx="18" fill="#17233A"/>
+  <text x="182" y="570" fill="#CBD5E1" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700">Advisory</text>
+  <text x="452" y="570" fill="#CBD5E1" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700">Holdings</text>
+  <text x="706" y="570" fill="#CBD5E1" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700">Insights</text>
+  <text x="970" y="570" fill="#CBD5E1" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700">Clients</text>
+  <text x="110" y="748" fill="#64748B" font-family="Arial, Helvetica, sans-serif" font-size="18">Fallback preview image for blocked homepage embeds</text>
+</svg>

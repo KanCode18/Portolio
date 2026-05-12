@@ -1,0 +1,95 @@
+{
+  "profile": {
+    "name": "Kanishk Chhabra",
+    "role": "Frontend Developer",
+    "location": "Delhi, India",
+    "email": "kanishk.chhabra2000@gmail.com",
+    "phone": "+919310429178",
+    "github": "https://github.com/KanCode18",
+    "linkedin": "https://www.linkedin.com/in/kanishk-chhabra-28598a1b5/",
+    "resumeHref": "",
+    "summary": "3+ years building high-performance web apps with React, Next.js, and TypeScript. Currently SDE-1 at Pantelwar, working on wealth management platforms serving portfolios worth 100Cr+. Obsessed with clean architecture, reusable components, and user experience.",
+    "heroLine": "Building fast, scalable, and beautiful web products - currently at Pantelwar."
+  },
+  "skills": [
+    "Next.js",
+    "React",
+    "TypeScript",
+    "Tailwind CSS",
+    "JavaScript",
+    "UI architecture",
+    "Design systems",
+    "Performance"
+  ],
+  "experience": [
+    {
+      "company": "Pantelwar",
+      "role": "SDE-1",
+      "dates": "Jan 2025 - Present",
+      "bullets": [
+        "Led UI development across 5 major React projects.",
+        "Maintained a 200K+ line codebase with reusable component libraries.",
+        "Integrated 10+ shared components for wealth management workflows."
+      ]
+    },
+    {
+      "company": "Pantelwar",
+      "role": "Associate SDE",
+      "dates": "Sep 2023 - Jan 2025",
+      "bullets": [
+        "Built dashboards for portfolio monitoring, role-based access, advisor workflows.",
+        "Optimized state management for complex financial pages."
+      ]
+    },
+    {
+      "company": "QSpiders",
+      "role": "Trainee",
+      "dates": "Mar 2023 - Sep 2023",
+      "bullets": [
+        "Full stack training, including practical projects and DSA problem solving.",
+        "Completed 100+ DSA problems and delivered small team applications."
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "title": "360 ONE RM Workspace",
+      "description": "Wealth management dashboard for Relationship Managers handling 100Cr+ portfolios.",
+      "stack": ["React", "Redux", "REST APIs"],
+      "highlight": "Boosted RM productivity by 25%, reduced UI change effort by 80%.",
+      "link": "https://www.360.one/wealth/home",
+      "type": "Company project",
+      "fallbackImage": "/project-fallbacks/360-one.svg"
+    },
+    {
+      "title": "Fingyani Platform",
+      "description": "Retail investment bucket UI for NSE/BSE markets with optimized state management.",
+      "stack": ["React", "Tailwind CSS"],
+      "highlight": "Improved data interaction efficiency by 30%.",
+      "link": "https://fingyani.com/",
+      "type": "Company project"
+    },
+    {
+      "title": "OmnaData Insights",
+      "description": "Research and analytics platform with subscription-based report access and analyst management workflows.",
+      "stack": ["Next.js", "Strapi CMS"],
+      "highlight": "Built analytics experiences for data-centric teams.",
+      "link": "https://www.omnadata.com/",
+      "type": "Company project"
+    },
+    {
+      "title": "RavokkWear",
+      "description": "Gen Z streetwear experience with e-commerce storefront, admin panel, and WhatsApp checkout.",
+      "stack": ["Next.js", "TypeScript", "Tailwind CSS", "Supabase", "Zustand"],
+      "highlight": "Solo-built full-stack brand with product, cart, and admin workflows.",
+      "link": "https://ravokk.vercel.app/",
+      "type": "Personal project"
+    }
+  ],
+  "stats": [
+    { "label": "RM productivity improvement", "value": 25, "suffix": "%" },
+    { "label": "Reduction in UI development effort", "value": 40, "suffix": "%" },
+    { "label": "Improvement in loading & interaction efficiency", "value": 30, "suffix": "%" },
+    { "label": "Lines of codebase maintained", "value": 200, "suffix": "K+" }
+  ]
+}
