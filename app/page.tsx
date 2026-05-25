@@ -358,9 +358,25 @@ export default function Home() {
     setContact((current) => ({ ...current, [name]: value }));
   };
 
-  const handleContactSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleContactSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setSent(true);
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+
+    try {
+      const res = await fetch('/api/contact', { method: 'POST', body: formData });
+      if (res.ok) {
+        setSent(true);
+      } else {
+        console.error('send failed', await res.text());
+        setSent(false);
+        alert('Failed to send message.');
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Error sending message');
+    }
+
     window.setTimeout(() => setSent(false), 2600);
   };
 
