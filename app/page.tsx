@@ -1,7 +1,17 @@
 ﻿'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import {
+  type ChangeEvent,
+  type CSSProperties,
+  type FormEvent,
+  type MouseEvent as ReactMouseEvent,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import portfolio from './data/portfolio.json';
+import ArcReactor from './components/arc-reactor';
 
 type ProjectCard = {
   title: string;
@@ -13,28 +23,104 @@ type ProjectCard = {
   fallbackImage?: string;
 };
 
+type ThemeMode = 'dark' | 'light';
+
 const navLinks = [
   { label: 'About', href: '#about' },
   { label: 'Experience', href: '#experience' },
   { label: 'Projects', href: '#projects' },
   { label: 'Contact', href: '#contact' },
 ];
+
+// loader boot lines removed (initial loading card disabled)
+
+const commandResponses: Record<string, string> = {
+  projects: 'Project archive ready. Showing product-grade React and Next.js systems.',
+  skills: 'Core stack online: React, Next.js, TypeScript, Tailwind, performance, and UI architecture.',
+  contact: 'Contact channel ready. Email, phone, and social routes are available.',
+  resume: 'Resume ready. Opening the public resume route.',
+};
+
 const { profile, skills, experience, projects, stats } = portfolio;
 
 function normalizeProjectUrl(link: string) {
   if (!link || link === '#') return null;
   try {
-    const url = new URL(link);
-    return link;
+    return new URL(link).toString();
   } catch {
     try {
-      const url = new URL(`https://${link}`);
-      return url.toString();
+      return new URL(`https://${link}`).toString();
     } catch {
       return null;
     }
   }
 }
+
+function Icon({ name }: { name: 'github' | 'linkedin' | 'phone' | 'mail' | 'sun' | 'moon' | 'spark' | 'external' }) {
+  const common = 'h-5 w-5';
+
+  switch (name) {
+    case 'github':
+      return (
+        <svg viewBox="0 0 24 24" aria-hidden="true" className={common}>
+          <path
+            fill="currentColor"
+            d="M12 2C6.48 2 2 6.58 2 12.26c0 4.53 2.87 8.37 6.84 9.72.5.1.68-.22.68-.49 0-.24-.01-.88-.01-1.73-2.78.62-3.37-1.37-3.37-1.37-.45-1.17-1.11-1.48-1.11-1.48-.91-.64.07-.63.07-.63 1.01.08 1.54 1.07 1.54 1.07.9 1.58 2.36 1.13 2.94.86.09-.67.35-1.13.64-1.39-2.22-.26-4.56-1.14-4.56-5.08 0-1.12.39-2.04 1.03-2.76-.1-.26-.45-1.3.1-2.72 0 0 .84-.28 2.75 1.05A9.35 9.35 0 0 1 12 6.9c.85 0 1.71.12 2.51.34 1.91-1.33 2.75-1.05 2.75-1.05.55 1.42.2 2.46.1 2.72.64.72 1.03 1.64 1.03 2.76 0 3.95-2.34 4.82-4.57 5.08.36.32.68.94.68 1.9 0 1.37-.01 2.48-.01 2.82 0 .28.18.6.69.5A10.1 10.1 0 0 0 22 12.26C22 6.58 17.52 2 12 2Z"
+          />
+        </svg>
+      );
+    case 'linkedin':
+      return (
+        <svg viewBox="0 0 24 24" aria-hidden="true" className={common}>
+          <path
+            fill="currentColor"
+            d="M5.34 3.72A2.63 2.63 0 1 1 .08 3.7a2.63 2.63 0 0 1 5.26.02ZM.55 8.02h4.32V22H.55V8.02Zm7.03 0h4.14v1.91h.06c.58-1.1 1.99-2.26 4.1-2.26 4.38 0 5.19 2.89 5.19 6.64V22h-4.32v-6.82c0-1.63-.03-3.72-2.27-3.72-2.27 0-2.62 1.77-2.62 3.6V22H7.58V8.02Z"
+          />
+        </svg>
+      );
+    case 'phone':
+      return (
+        <svg viewBox="0 0 24 24" aria-hidden="true" className={common}>
+          <path
+            fill="currentColor"
+            d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 .95-.27 11.72 11.72 0 0 0 3.68.6 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.23.2 2.42.6 3.68a1 1 0 0 1-.26.95l-2.22 2.16Z"
+          />
+        </svg>
+      );
+    case 'mail':
+      return (
+        <svg viewBox="0 0 24 24" aria-hidden="true" className={common}>
+          <path fill="currentColor" d="M4 5h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Zm8 7.4L4.9 7H4v.7l8 6.1 8-6.1V7h-.9L12 12.4Z" />
+        </svg>
+      );
+    case 'sun':
+      return (
+        <svg viewBox="0 0 24 24" aria-hidden="true" className={common}>
+          <path fill="currentColor" d="M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0-15 1.1 3h-2.2L12 2Zm0 20-1.1-3h2.2L12 22ZM2 12l3-1.1v2.2L2 12Zm20 0-3 1.1v-2.2l3 1.1ZM4.22 4.22l2.9 1.34-1.56 1.56-1.34-2.9Zm15.56 15.56-2.9-1.34 1.56-1.56 1.34 2.9Zm0-15.56-1.34 2.9-1.56-1.56 2.9-1.34ZM4.22 19.78l1.34-2.9 1.56 1.56-2.9 1.34Z" />
+        </svg>
+      );
+    case 'moon':
+      return (
+        <svg viewBox="0 0 24 24" aria-hidden="true" className={common}>
+          <path fill="currentColor" d="M20.3 15.7A8.8 8.8 0 0 1 8.3 3.7 9.7 9.7 0 1 0 20.3 15.7Z" />
+        </svg>
+      );
+    case 'external':
+      return (
+        <svg viewBox="0 0 24 24" aria-hidden="true" className={common}>
+          <path fill="currentColor" d="M14 3h7v7h-2V6.41l-9.3 9.3-1.4-1.42 9.29-9.29H14V3ZM5 5h6v2H7v10h10v-4h2v6H5V5Z" />
+        </svg>
+      );
+    default:
+      return (
+        <svg viewBox="0 0 24 24" aria-hidden="true" className={common}>
+          <path fill="currentColor" d="m12 2 1.72 6.28L20 10l-6.28 1.72L12 18l-1.72-6.28L4 10l6.28-1.72L12 2Zm7 12 .86 3.14L23 18l-3.14.86L19 22l-.86-3.14L15 18l3.14-.86L19 14ZM5 13l.7 2.3L8 16l-2.3.7L5 19l-.7-2.3L2 16l2.3-.7L5 13Z" />
+        </svg>
+      );
+  }
+}
+
+
 
 function ProjectPreview({ project }: { project: ProjectCard }) {
   const [blocked, setBlocked] = useState(false);
@@ -42,36 +128,24 @@ function ProjectPreview({ project }: { project: ProjectCard }) {
 
   if (project.fallbackImage) {
     return (
-      <div className="relative aspect-[16/10] overflow-hidden bg-[#0d0d0d]">
-        <img
-          src={project.fallbackImage}
-          alt={`${project.title} preview`}
-          className="h-full w-full object-cover"
-          loading="lazy"
-        />
-        <div className="absolute inset-x-0 bottom-0 flex items-end bg-gradient-to-t from-black/90 via-black/35 to-transparent p-5">
-          <div className="rounded-2xl border border-white/10 bg-black/45 px-4 py-3 text-xs uppercase tracking-[0.3em] text-[var(--muted)]">
-            {project.type}
-          </div>
-        </div>
+      <div className="project-preview">
+        <img src={project.fallbackImage} alt={`${project.title} preview`} className="h-full w-full object-cover" loading="lazy" />
+        <div className="project-preview-label">{project.type}</div>
       </div>
     );
   }
 
   if (!previewUrl || blocked) {
     return (
-      <div className="aspect-[16/10] bg-[linear-gradient(135deg,#0b1120_0%,#111827_55%,#0f172a_100%)]">
-        <div className="absolute inset-0 flex items-end p-6">
-          <div className="rounded-2xl border border-white/10 bg-black/30 px-4 py-3 text-xs uppercase tracking-[0.3em] text-[var(--muted)]">
-            {project.type}
-          </div>
-        </div>
+      <div className="project-preview project-preview-fallback">
+        <div className="holo-map" />
+        <div className="project-preview-label">{project.type}</div>
       </div>
     );
   }
 
   return (
-    <div className="relative aspect-[16/10] overflow-hidden bg-[#0d0d0d]">
+    <div className="project-preview project-preview-fallback">
       <iframe
         title={`${project.title} homepage preview`}
         src={previewUrl}
@@ -80,32 +154,43 @@ function ProjectPreview({ project }: { project: ProjectCard }) {
         onError={() => setBlocked(true)}
         className="pointer-events-none absolute left-0 top-0 h-[250%] w-[250%] origin-top-left scale-[0.4] border-0 bg-white"
       />
-      <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 bg-gradient-to-t from-black/90 via-black/40 to-transparent p-5">
-        <div className="rounded-2xl border border-white/10 bg-black/45 px-4 py-3 text-xs uppercase tracking-[0.3em] text-[var(--muted)]">
-          {project.type}
-        </div>
-        {blocked ? <span className="text-xs text-[var(--muted)]">Preview blocked</span> : null}
-      </div>
+      <div className="project-preview-label">{project.type}</div>
     </div>
   );
 }
 
 export default function Home() {
-  const [loading, setLoading] = useState(true);
+  const [theme, setTheme] = useState<ThemeMode>('dark');
   const [typedText, setTypedText] = useState('');
   const [copied, setCopied] = useState(false);
+  const [sent, setSent] = useState(false);
+  const [pulseMode, setPulseMode] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const [statCounts, setStatCounts] = useState<number[]>([0, 0, 0, 0]);
-  const cursorRef = useRef<HTMLDivElement>(null);
+  const [contact, setContact] = useState({ name: '', email: '', message: '' });
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const cursorDotRef = useRef<HTMLDivElement>(null);
+  const cursorRingRef = useRef<HTMLDivElement>(null);
+  const heroRef = useRef<HTMLElement | null>(null);
+
+  const skillLevels = useMemo(() => skills.map((_, index) => 82 + index * 4), []);
 
   useEffect(() => {
-    const timer = window.setTimeout(() => setLoading(false), 900);
-    return () => window.clearTimeout(timer);
+    const savedTheme = window.localStorage.getItem('theme');
+    if (savedTheme === 'light') setTheme('light');
   }, []);
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('light-theme', theme === 'light');
+    window.localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  // initial loading removed — no progress/boot timers
 
   useEffect(() => {
     const text = 'Frontend Developer';
     if (typedText.length < text.length) {
-      const timer = window.setTimeout(() => setTypedText(text.slice(0, typedText.length + 1)), 80);
+      const timer = window.setTimeout(() => setTypedText(text.slice(0, typedText.length + 1)), 72);
       return () => window.clearTimeout(timer);
     }
   }, [typedText]);
@@ -115,26 +200,106 @@ export default function Home() {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-          }
+          if (entry.isIntersecting) entry.target.classList.add('visible');
         });
       },
-      { threshold: 0.2 }
+      { threshold: 0.18 }
     );
 
-    elements.forEach((el) => observer.observe(el));
-    return () => elements.forEach((el) => observer.unobserve(el));
+    elements.forEach((element) => observer.observe(element));
+    return () => elements.forEach((element) => observer.unobserve(element));
   }, []);
 
   useEffect(() => {
-    const handleMouseMove = (event: MouseEvent) => {
-      if (cursorRef.current) {
-        cursorRef.current.style.transform = `translate3d(${event.clientX}px, ${event.clientY}px, 0)`;
+    const handleMove = (event: globalThis.MouseEvent) => {
+      cursorDotRef.current?.style.setProperty('--cursor-x', `${event.clientX}px`);
+      cursorDotRef.current?.style.setProperty('--cursor-y', `${event.clientY}px`);
+      cursorRingRef.current?.style.setProperty('--cursor-x', `${event.clientX}px`);
+      cursorRingRef.current?.style.setProperty('--cursor-y', `${event.clientY}px`);
+    };
+    window.addEventListener('mousemove', handleMove);
+    return () => window.removeEventListener('mousemove', handleMove);
+  }, []);
+
+  useEffect(() => {
+    const hero = heroRef.current ?? document.getElementById('hero');
+    if (!hero) return;
+
+    const reactor = hero.querySelector('.arc-reactor') as HTMLElement | null;
+    let idleRaf = 0;
+    let lastMove = performance.now();
+
+    const setVars = (x: number, y: number, intensity: number) => {
+      if (!reactor) return;
+      reactor.style.setProperty('--arc-tilt-x', `${x}deg`);
+      reactor.style.setProperty('--arc-tilt-y', `${y}deg`);
+      reactor.style.setProperty('--arc-intensity', `${intensity}`);
+    };
+
+    const handlePointer = (ev: PointerEvent) => {
+      const rect = hero.getBoundingClientRect();
+      const px = (ev.clientX - rect.left) / rect.width - 0.5;
+      const py = (ev.clientY - rect.top) / rect.height - 0.5;
+      const tiltX = (-py * 10).toFixed(2);
+      const tiltY = (px * 10).toFixed(2);
+      const intensity = Math.min(1.6, Math.hypot(px, py) * 1.8 + 0.2).toFixed(3);
+      setVars(Number(tiltX), Number(tiltY), Number(intensity));
+      lastMove = performance.now();
+      // brief pointer-triggered scan when user moves quickly
+      if (Number(intensity) > 1.0 && reactor) {
+        reactor.classList.add('arc-scan');
+        window.setTimeout(() => reactor.classList.remove('arc-scan'), 700);
       }
     };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+
+    hero.addEventListener('pointermove', handlePointer);
+
+    let lastScan = performance.now();
+    let nextScan = 4200 + Math.random() * 5300;
+
+    const triggerScan = () => {
+      if (!reactor) return;
+      reactor.classList.add('arc-scan');
+      const sparks = Array.from(reactor.querySelectorAll('.arc-sparks span')) as HTMLElement[];
+      sparks.forEach((s) => {
+        const angle = Math.random() * Math.PI * 2;
+        const r = 42 + Math.random() * 76;
+        s.style.setProperty('--sx', `${Math.cos(angle) * r}px`);
+        s.style.setProperty('--sy', `${Math.sin(angle) * r}px`);
+      });
+      window.setTimeout(() => reactor.classList.remove('arc-scan'), 900);
+      lastScan = performance.now();
+      nextScan = 4200 + Math.random() * 5300;
+    };
+
+    const idleLoop = () => {
+      const t = performance.now() * 0.001;
+      // gentle autonomous motion when user is not moving pointer
+      if (performance.now() - lastMove > 800) {
+        const ix = Math.sin(t * 0.9) * 2.2;
+        const iy = Math.cos(t * 1.1) * 2.6;
+        const intensity = 0.18 + (Math.sin(t * 0.7) + 1) * 0.06;
+        setVars(ix, iy, Number(intensity.toFixed(3)));
+      }
+
+      if (performance.now() - lastScan > nextScan) triggerScan();
+
+      idleRaf = window.requestAnimationFrame(idleLoop);
+    };
+
+    idleRaf = window.requestAnimationFrame(idleLoop);
+
+    return () => {
+      hero.removeEventListener('pointermove', handlePointer);
+      window.cancelAnimationFrame(idleRaf);
+    };
+  }, [pulseMode]);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   useEffect(() => {
@@ -144,21 +309,20 @@ export default function Home() {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0]?.isIntersecting) {
-          const durations = [25, 40, 30, 200];
-          durations.forEach((target, index) => {
-            let value = 0;
+          stats.forEach((item, index) => {
+            let current = 0;
             const interval = window.setInterval(() => {
-              value += Math.max(1, Math.ceil(target / 18));
-              if (value >= target) {
-                value = target;
+              current += Math.max(1, Math.ceil(item.value / 22));
+              if (current >= item.value) {
+                current = item.value;
                 window.clearInterval(interval);
               }
-              setStatCounts((current) => {
-                const next = [...current];
-                next[index] = value;
+              setStatCounts((stats) => {
+                const next = [...stats];
+                next[index] = current;
                 return next;
               });
-            }, 40);
+            }, 36);
           });
           observer.disconnect();
         }
@@ -170,6 +334,15 @@ export default function Home() {
     return () => observer.disconnect();
   }, []);
 
+  const toggleTheme = () => setTheme((current) => (current === 'dark' ? 'light' : 'dark'));
+
+  const triggerArc = () => {
+    setPulseMode(true);
+    window.setTimeout(() => setPulseMode(false), 1600);
+  };
+
+
+
   const handleCopyEmail = async () => {
     try {
       await navigator.clipboard.writeText(profile.email);
@@ -180,215 +353,266 @@ export default function Home() {
     }
   };
 
+  const handleContactChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = event.target;
+    setContact((current) => ({ ...current, [name]: value }));
+  };
+
+  const handleContactSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setSent(true);
+    window.setTimeout(() => setSent(false), 2600);
+  };
+
+  const handleTilt = (event: ReactMouseEvent<HTMLElement>) => {
+    const card = event.currentTarget;
+    const rect = card.getBoundingClientRect();
+    const x = ((event.clientX - rect.left) / rect.width - 0.5) * 16;
+    const y = ((event.clientY - rect.top) / rect.height - 0.5) * -16;
+    card.style.setProperty('--tilt-x', `${y}deg`);
+    card.style.setProperty('--tilt-y', `${x}deg`);
+  };
+
+  const resetTilt = (event: ReactMouseEvent<HTMLElement>) => {
+    event.currentTarget.style.setProperty('--tilt-x', '0deg');
+    event.currentTarget.style.setProperty('--tilt-y', '0deg');
+  };
+
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[var(--bg)] text-[var(--text)]">
-      <div ref={cursorRef} className="cursor-dot" />
+    <main className={`site-shell ${theme === 'light' ? 'light-theme' : ''} ${pulseMode ? 'reactor-pulse' : ''}`}>
+      <div ref={cursorRingRef} className="cursor-halo" aria-hidden="true" />
+      <div ref={cursorDotRef} className="cursor-dot" aria-hidden="true" />
 
-      {loading ? (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--bg)] text-[var(--text)]">
-          <div className="space-y-6 rounded-3xl border border-white/10 bg-[rgba(15,15,15,0.95)] p-10 text-center shadow-glow">
-            <div className="mx-auto h-20 w-20 rounded-full border border-[var(--accent)]/20 bg-[rgba(37,99,235,0.1)]">
-              <div className="relative top-4 h-12 w-12 animate-spin rounded-full border-4 border-[var(--accent)] border-t-transparent" />
-            </div>
-            <p className="text-sm uppercase tracking-[0.35em] text-[var(--accent)]">Loading portfolio</p>
-            <p className="text-xl font-semibold">Setting the stage for a high-end frontend story.</p>
-          </div>
-        </div>
-      ) : null}
+      {/* initial loader removed */}
 
-      <header className="sticky top-0 z-40 border-b border-white/10 bg-[rgba(10,10,10,0.85)] backdrop-blur-xl">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 text-sm text-[var(--muted)] sm:px-8">
-          <div className="font-heading text-base uppercase tracking-[0.3em] text-[var(--text)]">KANISHK</div>
-          <nav className="flex items-center gap-6">
-            {navLinks.map((item) => (
-              <a key={item.href} href={item.href} className="nav-link transition-colors duration-200 hover:text-[var(--text)]">
-                {item.label}
-              </a>
-            ))}
-          </nav>
-        </div>
+      <header className={`top-nav ${scrolled ? 'top-nav-scrolled' : ''}`}>
+        <nav className="nav-track" aria-label="Primary navigation">
+          {navLinks.map((item) => (
+            <a key={item.href} href={item.href} className="nav-link">
+              {item.label}
+            </a>
+          ))}
+        </nav>
+        <button
+          type="button"
+          className="mobile-menu-button"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-label="Toggle navigation menu"
+          aria-expanded={mobileMenuOpen}
+        >
+          <span />
+          <span />
+          <span />
+        </button>
       </header>
 
-      <section id="hero" className="relative min-h-[calc(100vh-72px)] overflow-hidden px-6 py-16 sm:px-8 lg:px-10">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(37,99,235,0.16),transparent_20%),radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.08),transparent_25%),repeating-linear-gradient(0deg,transparent,transparent_1px,rgba(255,255,255,0.02)1px,rgba(255,255,255,0.02)4px)]" />
-        <div className="relative mx-auto flex max-w-6xl flex-col justify-center gap-10 py-16">
-          <div className="max-w-4xl space-y-8">
-            <p className="font-heading text-xs uppercase tracking-[0.35em] text-[var(--accent)]">Frontend Developer</p>
-            <h1 className="font-heading text-[clamp(3.5rem,7vw,6.2rem)] leading-[0.88] tracking-[-0.05em] text-[var(--text)]">
-              KANISHK CHHABRA
-            </h1>
-            <div className="space-y-4">
-              <div className="flex items-center gap-3 text-3xl font-medium text-[var(--text)] sm:text-4xl">
-                <span className="font-heading text-[var(--accent)]">{typedText}</span>
-                <span className="h-6 w-0.5 animate-pulse rounded-full bg-[var(--accent)]" />
-              </div>
-              <p className="max-w-3xl text-lg leading-8 text-[var(--muted)] sm:text-xl">{profile.heroLine}</p>
+      {mobileMenuOpen && (
+        <nav className="mobile-drawer" aria-label="Mobile navigation">
+          {navLinks.map((item) => (
+            <a
+              key={item.href}
+              href={item.href}
+              className="mobile-nav-link"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              {item.label}
+            </a>
+          ))}
+        </nav>
+      )}
+
+      <section id="hero" ref={heroRef} className="hero-section section-shell">
+        <div className="holo-background" aria-hidden="true" />
+        <div className="hero-grid">
+          <div className="hero-copy">
+            <p className="eyebrow">Frontend Developer</p>
+            <h1>{profile.name}</h1>
+            <div className="hero-tagline">
+              <span>{typedText}</span>
+              <i aria-hidden="true" />
             </div>
-            <div className="flex flex-col gap-4 sm:flex-row">
-              <a href="#projects" className="inline-flex items-center justify-center rounded-full border border-[var(--accent)] bg-[var(--accent)] px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-black transition hover:bg-opacity-90">
-                View Work
+            <p>{profile.heroLine}</p>
+            <div className="hero-actions">
+              <a href="#projects" className="primary-action">
+                View projects
               </a>
               {profile.resumeHref ? (
-                <a href={profile.resumeHref} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center rounded-full border border-[var(--accent)] px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-[var(--text)] transition hover:bg-white/5">
-                  View Resume
+                <a href={profile.resumeHref} target="_blank" rel="noreferrer" className="secondary-action">
+                  View resume
                 </a>
               ) : null}
             </div>
           </div>
+
+          <div className="hero-panel holo-card">
+            <button type="button" className="arc-trigger" onClick={triggerArc} aria-label="Activate arc reactor pulse">
+              <ArcReactor active={pulseMode} />
+            </button>
+            <div className="reactor-readouts">
+              <span>UX systems: stable</span>
+              <span>React systems: online</span>
+              <span>Performance budget: clean</span>
+            </div>
+          </div>
         </div>
+
+        {/* voice-console removed per request */}
       </section>
 
-      <section id="about" className="reveal px-6 pb-16 sm:px-8 lg:px-10">
-        <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[1.25fr_0.9fr]">
-          <div>
-            <p className="text-sm uppercase tracking-[0.35em] text-[var(--accent)]">About</p>
-            <h2 className="mt-4 text-3xl font-heading font-semibold text-[var(--text)] sm:text-4xl">Senior-style frontend craftsmanship with clarity and control.</h2>
-            <p className="mt-6 max-w-3xl text-base leading-8 text-[var(--muted)] sm:text-lg">
-              {profile.summary}
-            </p>
-          </div>
-          <aside className="rounded-[2rem] border border-[var(--border)] bg-[var(--surface)] p-8 shadow-[var(--shadow)]">
-            <p className="text-sm uppercase tracking-[0.35em] text-[var(--accent)]">Core stack</p>
-            <div className="mt-8 grid gap-3 sm:grid-cols-2">
-              {skills.map((skill) => (
-                <span key={skill} className="inline-flex rounded-full border border-[var(--border)] bg-[rgba(255,255,255,0.03)] px-4 py-3 text-sm text-[var(--text)]">
-                  {skill}
-                </span>
+      <section id="about" className="reveal section-shell">
+        <div className="section-heading">
+          <p className="eyebrow">About</p>
+            <h2>Frontend craft tuned for clarity, speed, and product control.</h2>
+        </div>
+        <div className="about-grid">
+          <article className="holo-card large-card">
+            <p>{profile.summary}</p>
+            <div className="signal-strip">
+              <span>{profile.location}</span>
+              <span>{profile.role}</span>
+              <span>3+ years</span>
+            </div>
+          </article>
+          <aside className="holo-card skills-panel">
+            <p className="eyebrow">Core stack</p>
+            <div className="skill-stack">
+              {skills.map((skill, index) => (
+                <div key={skill} className="skill-charge" style={{ '--level': `${skillLevels[index]}%` } as CSSProperties}>
+                  <div className="skill-label">
+                    <span>{skill}</span>
+                    <span>{skillLevels[index]}%</span>
+                  </div>
+                  <div className="charge-track">
+                    <div />
+                  </div>
+                </div>
               ))}
             </div>
           </aside>
         </div>
       </section>
 
-      <section id="experience" className="reveal border-t border-white/10 px-6 py-16 sm:px-8 lg:px-10">
-        <div className="mx-auto max-w-6xl">
-          <p className="text-sm uppercase tracking-[0.35em] text-[var(--accent)]">Experience</p>
-          <h2 className="mt-4 text-3xl font-heading font-semibold text-[var(--text)] sm:text-4xl">A timeline of impact and growth.</h2>
-          <div className="mt-12 space-y-10 border-l border-slate-700/60 pl-8">
-            {experience.map((item) => (
-              <div key={`${item.company}-${item.role}`} className="relative reveal rounded-3xl border border-white/10 bg-[var(--surface2)] p-6 shadow-[var(--shadow)] sm:p-8">
-                <span className="absolute left-0 top-8 h-4 w-4 -translate-x-1/2 rounded-full bg-[var(--accent)] ring-4 ring-[rgba(37,99,235,0.15)]" />
-                <div className="flex flex-col gap-3">
-                  <div className="flex flex-wrap items-center gap-3 text-sm text-[var(--muted)]">
-                    <span className="font-heading text-[var(--accent)]">{item.role}</span>
-                    <span className="text-[var(--muted)]">@ {item.company}</span>
-                  </div>
-                  <p className="text-sm uppercase tracking-[0.25em] text-[var(--muted)]">{item.dates}</p>
-                  <ul className="mt-4 space-y-3 text-sm leading-7 text-[var(--text)]">
-                    {item.bullets.map((bullet) => (
-                      <li key={bullet} className="ml-4 list-disc text-[var(--muted)]">{bullet}</li>
-                    ))}
-                  </ul>
+      <section id="experience" className="reveal section-shell">
+        <div className="section-heading">
+          <p className="eyebrow">Experience</p>
+            <h2>Operational history with measurable product impact.</h2>
+        </div>
+        <div className="timeline">
+          {experience.map((item, index) => (
+            <article key={`${item.company}-${item.role}`} className="timeline-node reveal" style={{ transitionDelay: `${index * 90}ms` }}>
+              <div className="node-marker" aria-hidden="true" />
+              <div className="holo-card">
+                <div className="timeline-topline">
+                  <span>{item.role}</span>
+                  <span>{item.dates}</span>
                 </div>
+                <h3>{item.company}</h3>
+                <ul>
+                  {item.bullets.map((bullet) => (
+                    <li key={bullet}>{bullet}</li>
+                  ))}
+                </ul>
               </div>
-            ))}
-          </div>
+            </article>
+          ))}
         </div>
       </section>
 
-      <section id="projects" className="reveal px-6 pb-16 sm:px-8 lg:px-10">
-        <div className="mx-auto max-w-6xl">
-          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-            <div>
-              <p className="text-sm uppercase tracking-[0.35em] text-[var(--accent)]">Projects</p>
-              <h2 className="mt-4 text-3xl font-heading font-semibold text-[var(--text)] sm:text-4xl">Built for product-grade clarity.</h2>
-            </div>
-            <p className="max-w-2xl text-sm leading-7 text-[var(--muted)]">
-              Project data is committed in the portfolio JSON file, so every visitor sees the same published content.
-            </p>
+      <section id="projects" className="reveal section-shell">
+        <div className="section-heading split-heading">
+          <div>
+            <p className="eyebrow">Projects</p>
+          <h2>Interfaces built for real product workflows.</h2>
           </div>
-
-          <div className="mt-12 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
-            {projects.map((project) => (
-              <article key={project.title} className="group overflow-hidden rounded-[1.75rem] border border-white/10 bg-[var(--surface)] shadow-[var(--shadow)] transition duration-300 hover:-translate-y-1.5 hover:border-[var(--accent)]">
-                <div className="relative overflow-hidden bg-slate-950">
-                  <div className="transition duration-500 group-hover:scale-[1.03]">
-                    <ProjectPreview project={project} />
-                  </div>
+          <p>Selected systems across wealth, analytics, retail investing, and commerce.</p>
+        </div>
+        <div className="project-grid">
+          {projects.map((project) => (
+            <article key={project.title} className="project-card holo-card" onMouseMove={handleTilt} onMouseLeave={resetTilt}>
+              <ProjectPreview project={project} />
+              <div className="project-body">
+                <div className="project-kicker">
+                  <span>{project.type}</span>
+                  <Icon name="spark" />
                 </div>
-                <div className="space-y-4 p-6">
-                  <h3 className="text-xl font-semibold text-[var(--text)]">{project.title}</h3>
-                  <p className="text-sm leading-7 text-[var(--muted)]">{project.description}</p>
-                  <div className="flex flex-wrap gap-2">
-                    {project.stack.map((tag) => (
-                      <span key={tag} className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[0.72rem] uppercase tracking-[0.25em] text-[var(--muted)]">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                  <p className="text-sm leading-6 text-[var(--text)]">{project.highlight}</p>
-                  <a href={project.link} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--accent)] transition hover:text-white">
-                    View project
-                    <span aria-hidden="true">→</span>
-                  </a>
+                <h3>{project.title}</h3>
+                <p>{project.description}</p>
+                <div className="tag-row">
+                  {project.stack.map((tag) => (
+                    <span key={tag}>{tag}</span>
+                  ))}
                 </div>
-              </article>
-            ))}
-          </div>
+                <p className="impact-line">{project.highlight}</p>
+                <a href={project.link} target="_blank" rel="noreferrer" className="project-link">
+                  View project <Icon name="external" />
+                </a>
+              </div>
+            </article>
+          ))}
         </div>
       </section>
 
-      <section id="achievements" className="reveal border-y border-white/10 bg-[var(--surface)] px-6 py-16 sm:px-8 lg:px-10">
-        <div className="mx-auto max-w-6xl">
-          <div className="grid gap-6 md:grid-cols-4">
-            {stats.map((item, index) => {
-              const value = Math.min(statCounts[index] || 0, item.value);
-              return (
-                <div key={item.label} className="rounded-[1.5rem] border border-white/10 bg-[#0e0e0e] p-8 text-center shadow-[var(--shadow)]">
-                  <p className="text-4xl font-heading font-semibold text-[var(--accent)] sm:text-5xl">
-                    {item.suffix === 'K+' ? `${value}${value < item.value ? '' : 'K+'}` : `${value}${item.suffix}`}
-                  </p>
-                  <p className="mt-4 text-sm leading-7 text-[var(--muted)]">{item.label}</p>
-                </div>
-              );
-            })}
-          </div>
+      <section id="achievements" className="reveal section-shell stats-band">
+        <div className="stat-grid">
+          {stats.map((item, index) => {
+            const value = Math.min(statCounts[index] || 0, item.value);
+            return (
+              <div key={item.label} className="stat-core holo-card">
+                <span className="stat-ring" style={{ '--stat-level': `${(value / item.value) * 100}%` } as CSSProperties} />
+                <p>{item.suffix === 'K+' ? `${value}${value < item.value ? '' : 'K+'}` : `${value}${item.suffix}`}</p>
+                <span>{item.label}</span>
+              </div>
+            );
+          })}
         </div>
       </section>
 
-      <section id="contact" className="reveal px-6 pb-20 sm:px-8 lg:px-10">
-        <div className="mx-auto max-w-6xl rounded-[2rem] border border-[var(--border)] bg-[var(--surface)] p-10 shadow-[var(--shadow)]">
-          <div className="flex flex-col items-start gap-8 lg:flex-row lg:items-center lg:justify-between">
-            <div className="space-y-4">
-              <p className="text-sm uppercase tracking-[0.35em] text-[var(--accent)]">Contact</p>
-              <h2 className="text-3xl font-heading font-semibold text-[var(--text)] sm:text-4xl">Let's build something.</h2>
-            </div>
-            <div className="flex flex-wrap gap-4">
-              <button
-                type="button"
-                onClick={handleCopyEmail}
-                className="rounded-full border border-[var(--accent)] bg-transparent px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-[var(--text)] transition hover:bg-[rgba(37,99,235,0.08)]"
-              >
-                {copied ? 'Email copied' : profile.email}
-              </button>
-            </div>
-          </div>
+      <section id="contact" className="reveal section-shell contact-section">
+        <div className="section-heading">
+          <p className="eyebrow">Contact</p>
+          <h2>Start a conversation about the next thing to build.</h2>
+        </div>
+        <div className="contact-grid">
+          <form className={`contact-form holo-card ${sent ? 'contact-sent' : ''}`} onSubmit={handleContactSubmit}>
+            <label>
+              Name
+              <input name="name" value={contact.name} onChange={handleContactChange} required placeholder="Your name" />
+            </label>
+            <label>
+              Email
+              <input type="email" name="email" value={contact.email} onChange={handleContactChange} required placeholder="Your email" />
+            </label>
+            <label>
+              Message
+              <textarea name="message" value={contact.message} onChange={handleContactChange} required rows={4} placeholder="Tell me about your project" />
+            </label>
+            <button type="submit">{sent ? 'Sent' : 'Send message'}</button>
+          </form>
 
-          <div className="mt-10 grid gap-4 sm:grid-cols-3 lg:grid-cols-4">
-            <a href={profile.github} target="_blank" rel="noreferrer" className="group inline-flex h-16 w-full items-center justify-center rounded-3xl border border-white/10 bg-black/20 transition hover:border-[var(--accent)] hover:bg-[rgba(37,99,235,0.08)]">
-              <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6 text-[var(--text)] transition group-hover:text-[var(--accent)]" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.16 6.84 9.49.5.09.68-.22.68-.48 0-.24-.01-.87-.01-1.71-2.78.6-3.37-1.34-3.37-1.34-.45-1.14-1.11-1.44-1.11-1.44-.91-.62.07-.61.07-.61 1.01.07 1.54 1.04 1.54 1.04.9 1.54 2.36 1.1 2.94.84.09-.66.35-1.1.64-1.35-2.22-.25-4.56-1.11-4.56-4.95 0-1.09.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02A9.58 9.58 0 0112 6.8c.85.004 1.71.11 2.51.32 1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.6 1.03 2.69 0 3.85-2.34 4.7-4.57 4.95.36.31.68.92.68 1.85 0 1.34-.01 2.42-.01 2.75 0 .27.18.58.69.48A10.003 10.003 0 0022 12c0-5.52-4.48-10-10-10z" fill="currentColor" />
-              </svg>
+          <aside className="holo-card contact-panel">
+            <button type="button" onClick={handleCopyEmail} className="contact-pill">
+              <Icon name="mail" />
+              {copied ? 'Email copied' : profile.email}
+            </button>
+            <a href={profile.github} target="_blank" rel="noreferrer" className="contact-pill">
+              <Icon name="github" />
+              GitHub
             </a>
-            <a href={profile.linkedin} target="_blank" rel="noreferrer" className="group inline-flex h-16 w-full items-center justify-center rounded-3xl border border-white/10 bg-black/20 transition hover:border-[var(--accent)] hover:bg-[rgba(37,99,235,0.08)]">
-              <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6 text-[var(--text)] transition group-hover:text-[var(--accent)]" xmlns="http://www.w3.org/2000/svg">
-                <path d="M4.98 3.5C4.98 4.88 3.94 6 2.66 6 1.34 6 .3 4.88.3 3.5.3 2.12 1.34 1 2.66 1c1.28 0 2.32 1.12 2.32 2.5zm.04 4.5H2.62V23h2.4V8zm7.5 0h-2.4V23h2.4v-7.2c0-3.86 4.92-4.17 4.92 0V23h2.4V14.9c0-7.04-7.56-6.78-7.56 0V8z" fill="currentColor"/>
-              </svg>
+            <a href={profile.linkedin} target="_blank" rel="noreferrer" className="contact-pill">
+              <Icon name="linkedin" />
+              LinkedIn
             </a>
-            <a href={`tel:${profile.phone}`} className="group inline-flex h-16 w-full items-center justify-center rounded-3xl border border-white/10 bg-black/20 transition hover:border-[var(--accent)] hover:bg-[rgba(37,99,235,0.08)]">
-              <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6 text-[var(--text)] transition group-hover:text-[var(--accent)]" xmlns="http://www.w3.org/2000/svg">
-                <path fillRule="evenodd" clipRule="evenodd" d="M6.62 10.79a15.07 15.07 0 006.59 6.59l2.2-2.2a1 1 0 01.95-.27 11.72 11.72 0 003.68.6 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.23.2 2.42.6 3.68a1 1 0 01-.26.95l-2.22 2.16z" fill="currentColor"/>
-              </svg>
+            <a href={`tel:${profile.phone}`} className="contact-pill">
+              <Icon name="phone" />
+              {profile.phone}
             </a>
-          </div>
+          </aside>
         </div>
       </section>
 
-      <footer className="border-t border-white/10 px-6 py-8 text-sm text-[var(--muted)] sm:px-8 lg:px-10">
-        <div className="mx-auto flex max-w-6xl flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <span>© 2026 Kanishk Chhabra</span>
-          <span>Built with React + Tailwind</span>
-        </div>
+      <footer className="site-footer">
+        <span>© 2026 {profile.name}</span>
+        <span>Built with Next.js + Tailwind</span>
       </footer>
     </main>
   );

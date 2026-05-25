@@ -7,7 +7,7 @@
     "phone": "+919310429178",
     "github": "https://github.com/KanCode18",
     "linkedin": "https://www.linkedin.com/in/kanishk-chhabra-28598a1b5/",
-    "resumeHref": "",
+    "resumeHref": "/resume",
     "summary": "3+ years building high-performance web apps with React, Next.js, and TypeScript. Currently SDE-1 at Pantelwar, working on wealth management platforms serving portfolios worth 100Cr+. Obsessed with clean architecture, reusable components, and user experience.",
     "heroLine": "Building fast, scalable, and beautiful web products - currently at Pantelwar."
   },
@@ -55,7 +55,7 @@
     {
       "title": "360 ONE RM Workspace",
       "description": "Wealth management dashboard for Relationship Managers handling 100Cr+ portfolios.",
-      "stack": ["React", "Redux", "REST APIs"],
+      "stack": ["React","Next.js", "Redux", "REST APIs", "Material UI"],
       "highlight": "Boosted RM productivity by 25%, reduced UI change effort by 80%.",
       "link": "https://www.360.one/wealth/home",
       "type": "Company project",
@@ -64,7 +64,7 @@
     {
       "title": "Fingyani Platform",
       "description": "Retail investment bucket UI for NSE/BSE markets with optimized state management.",
-      "stack": ["React", "Tailwind CSS"],
+      "stack": ["React","Next.js", "Material UI", "Redux","REST APIs"],
       "highlight": "Improved data interaction efficiency by 30%.",
       "link": "https://fingyani.com/",
       "type": "Company project"
@@ -72,7 +72,7 @@
     {
       "title": "OmnaData Insights",
       "description": "Research and analytics platform with subscription-based report access and analyst management workflows.",
-      "stack": ["Next.js", "Strapi CMS"],
+      "stack": ["React","Next.js","Tailwind CSS"],
       "highlight": "Built analytics experiences for data-centric teams.",
       "link": "https://www.omnadata.com/",
       "type": "Company project"
