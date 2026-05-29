@@ -32,16 +32,31 @@ const navLinks = [
   { label: 'Contact', href: '#contact' },
 ];
 
-// loader boot lines removed (initial loading card disabled)
-
-const commandResponses: Record<string, string> = {
-  projects: 'Project archive ready. Showing product-grade React and Next.js systems.',
-  skills: 'Core stack online: React, Next.js, TypeScript, Tailwind, performance, and UI architecture.',
-  contact: 'Contact channel ready. Email, phone, and social routes are available.',
-  resume: 'Resume ready. Opening the public resume route.',
-};
-
 const { profile, skills, experience, projects, stats } = portfolio;
+
+// Skill categories for the new skills display
+const skillCategories = [
+  {
+    label: 'Frontend',
+    icon: '◈',
+    items: ['React.js', 'Next.js', 'TypeScript', 'JavaScript (ES6+)', 'Tailwind CSS', 'GSAP'],
+  },
+  {
+    label: 'UI & Design',
+    icon: '◇',
+    items: ['Material UI', 'ShadCN', 'Responsive UI/UX', 'Design Systems', 'Web Performance'],
+  },
+  {
+    label: 'State & Data',
+    icon: '◉',
+    items: ['Redux', 'Redux Toolkit', 'Context API', 'REST APIs', 'Strapi CMS'],
+  },
+  {
+    label: 'Tooling',
+    icon: '◎',
+    items: ['Git', 'GitHub', 'Docker', 'Postman', 'Jira', 'Agile / Scrum'],
+  },
+];
 
 function normalizeProjectUrl(link: string) {
   if (!link || link === '#') return null;
@@ -120,8 +135,6 @@ function Icon({ name }: { name: 'github' | 'linkedin' | 'phone' | 'mail' | 'sun'
   }
 }
 
-
-
 function ProjectPreview({ project }: { project: ProjectCard }) {
   const [blocked, setBlocked] = useState(false);
   const previewUrl = normalizeProjectUrl(project.link);
@@ -129,7 +142,7 @@ function ProjectPreview({ project }: { project: ProjectCard }) {
   if (project.fallbackImage) {
     return (
       <div className="project-preview">
-        <img src={project.fallbackImage} alt={`${project.title} preview`} className="h-full w-full object-cover" loading="lazy" />
+        <img src={project.fallbackImage} alt={`${project.title} preview`} className="absolute inset-0 h-full w-full object-cover" loading="lazy" />
         <div className="project-preview-label">{project.type}</div>
       </div>
     );
@@ -152,7 +165,7 @@ function ProjectPreview({ project }: { project: ProjectCard }) {
         loading="lazy"
         sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
         onError={() => setBlocked(true)}
-        className="pointer-events-none absolute left-0 top-0 h-[250%] w-[250%] origin-top-left scale-[0.4] border-0 bg-white"
+        className="project-preview-frame pointer-events-none absolute left-0 top-0 border-0 bg-white"
       />
       <div className="project-preview-label">{project.type}</div>
     </div>
@@ -166,14 +179,12 @@ export default function Home() {
   const [sent, setSent] = useState(false);
   const [pulseMode, setPulseMode] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [statCounts, setStatCounts] = useState<number[]>([0, 0, 0, 0]);
+  const [statCounts, setStatCounts] = useState<number[]>([0, 0, 0, 0, 0, 0]);
   const [contact, setContact] = useState({ name: '', email: '', message: '' });
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const cursorDotRef = useRef<HTMLDivElement>(null);
   const cursorRingRef = useRef<HTMLDivElement>(null);
   const heroRef = useRef<HTMLElement | null>(null);
-
-  const skillLevels = useMemo(() => skills.map((_, index) => 82 + index * 4), []);
 
   useEffect(() => {
     const savedTheme = window.localStorage.getItem('theme');
@@ -185,10 +196,8 @@ export default function Home() {
     window.localStorage.setItem('theme', theme);
   }, [theme]);
 
-  // initial loading removed — no progress/boot timers
-
   useEffect(() => {
-    const text = 'Frontend Developer';
+    const text = 'AI-focused frontend builder';
     if (typedText.length < text.length) {
       const timer = window.setTimeout(() => setTypedText(text.slice(0, typedText.length + 1)), 72);
       return () => window.clearTimeout(timer);
@@ -205,7 +214,6 @@ export default function Home() {
       },
       { threshold: 0.18 }
     );
-
     elements.forEach((element) => observer.observe(element));
     return () => elements.forEach((element) => observer.unobserve(element));
   }, []);
@@ -245,7 +253,6 @@ export default function Home() {
       const intensity = Math.min(1.6, Math.hypot(px, py) * 1.8 + 0.2).toFixed(3);
       setVars(Number(tiltX), Number(tiltY), Number(intensity));
       lastMove = performance.now();
-      // brief pointer-triggered scan when user moves quickly
       if (Number(intensity) > 1.0 && reactor) {
         reactor.classList.add('arc-scan');
         window.setTimeout(() => reactor.classList.remove('arc-scan'), 700);
@@ -274,16 +281,13 @@ export default function Home() {
 
     const idleLoop = () => {
       const t = performance.now() * 0.001;
-      // gentle autonomous motion when user is not moving pointer
       if (performance.now() - lastMove > 800) {
         const ix = Math.sin(t * 0.9) * 2.2;
         const iy = Math.cos(t * 1.1) * 2.6;
         const intensity = 0.18 + (Math.sin(t * 0.7) + 1) * 0.06;
         setVars(ix, iy, Number(intensity.toFixed(3)));
       }
-
       if (performance.now() - lastScan > nextScan) triggerScan();
-
       idleRaf = window.requestAnimationFrame(idleLoop);
     };
 
@@ -303,6 +307,17 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 760) {
+        setMobileMenuOpen(false);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
     const section = document.querySelector('#achievements');
     if (!section) return;
 
@@ -317,8 +332,8 @@ export default function Home() {
                 current = item.value;
                 window.clearInterval(interval);
               }
-              setStatCounts((stats) => {
-                const next = [...stats];
+              setStatCounts((prev) => {
+                const next = [...prev];
                 next[index] = current;
                 return next;
               });
@@ -341,8 +356,6 @@ export default function Home() {
     window.setTimeout(() => setPulseMode(false), 1600);
   };
 
-
-
   const handleCopyEmail = async () => {
     try {
       await navigator.clipboard.writeText(profile.email);
@@ -362,7 +375,6 @@ export default function Home() {
     event.preventDefault();
     const form = event.currentTarget;
     const formData = new FormData(form);
-
     try {
       const res = await fetch('/api/contact', { method: 'POST', body: formData });
       if (res.ok) {
@@ -376,7 +388,6 @@ export default function Home() {
       console.error(err);
       alert('Error sending message');
     }
-
     window.setTimeout(() => setSent(false), 2600);
   };
 
@@ -399,9 +410,8 @@ export default function Home() {
       <div ref={cursorRingRef} className="cursor-halo" aria-hidden="true" />
       <div ref={cursorDotRef} className="cursor-dot" aria-hidden="true" />
 
-      {/* initial loader removed */}
-
       <header className={`top-nav ${scrolled ? 'top-nav-scrolled' : ''}`}>
+        <span className="nav-brand">KC</span>
         <nav className="nav-track" aria-label="Primary navigation">
           {navLinks.map((item) => (
             <a key={item.href} href={item.href} className="nav-link">
@@ -437,24 +447,29 @@ export default function Home() {
         </nav>
       )}
 
+      {/* ── HERO ── */}
       <section id="hero" ref={heroRef} className="hero-section section-shell">
         <div className="holo-background" aria-hidden="true" />
         <div className="hero-grid">
           <div className="hero-copy">
-            <p className="eyebrow">Frontend Developer</p>
+            <p className="eyebrow">Frontend Developer · Delhi, India</p>
             <h1>{profile.name}</h1>
             <div className="hero-tagline">
               <span>{typedText}</span>
               <i aria-hidden="true" />
             </div>
-            <p>{profile.heroLine}</p>
+            <p className="hero-desc">{profile.heroLine}</p>
+            <div className="hero-ai-note">
+              <p>I build interfaces that feel fast, intentional, and alive. Currently working on wealth management platforms that handle portfolios worth ₹100 Cr+.</p>
+              <p>Outside work I’ve been exploring how AI fits into the design and engineering workflow. Faster prototyping, smarter iteration, less time on the boring parts.</p>
+            </div>
             <div className="hero-actions">
               <a href="#projects" className="primary-action">
-                View projects
+                See my work
               </a>
               {profile.resumeHref ? (
                 <a href={profile.resumeHref} target="_blank" rel="noreferrer" className="secondary-action">
-                  View resume
+                  View résumé
                 </a>
               ) : null}
             </div>
@@ -471,35 +486,44 @@ export default function Home() {
             </div>
           </div>
         </div>
-
-        {/* voice-console removed per request */}
       </section>
 
+      {/* ── ABOUT ── */}
       <section id="about" className="reveal section-shell">
         <div className="section-heading">
           <p className="eyebrow">About</p>
-            <h2>Frontend craft tuned for clarity, speed, and product control.</h2>
+          <h2>Three years of shipping and still raising the bar.</h2>
         </div>
         <div className="about-grid">
           <article className="holo-card large-card">
-            <p>{profile.summary}</p>
+            <p>
+              I’m a frontend developer who genuinely cares about the craft. Clean component architecture, tight performance budgets, UIs that don’t just work but feel right. I’ve spent the last three years building production systems in the wealth and fintech space, working across React, Next.js, and TypeScript on codebases where real money moves every day.
+            </p>
+            <p className="about-second">
+              I think the best frontend work sits right at the intersection of engineering rigour and design sensibility. Whether I’m refactoring a 200K-line codebase or shipping something new from scratch, I try to bring the same level of care to both.
+            </p>
             <div className="signal-strip">
               <span>{profile.location}</span>
-              <span>{profile.role}</span>
+              <span>SDE-1 · Pantelwar</span>
               <span>3+ years</span>
+              <span>Open to opportunities</span>
             </div>
           </article>
+
+          {/* ── SKILLS PANEL — categories replace bars ── */}
           <aside className="holo-card skills-panel">
-            <p className="eyebrow">Core stack</p>
-            <div className="skill-stack">
-              {skills.map((skill, index) => (
-                <div key={skill} className="skill-charge" style={{ '--level': `${skillLevels[index]}%` } as CSSProperties}>
-                  <div className="skill-label">
-                    <span>{skill}</span>
-                    <span>{skillLevels[index]}%</span>
+            <p className="eyebrow">Tech I work with</p>
+            <div className="skill-categories">
+              {skillCategories.map((cat) => (
+                <div key={cat.label} className="skill-category">
+                  <div className="skill-cat-header">
+                    <span className="skill-cat-icon" aria-hidden="true">{cat.icon}</span>
+                    <span className="skill-cat-label">{cat.label}</span>
                   </div>
-                  <div className="charge-track">
-                    <div />
+                  <div className="skill-tag-row">
+                    {cat.items.map((item) => (
+                      <span key={item} className="skill-tag">{item}</span>
+                    ))}
                   </div>
                 </div>
               ))}
@@ -508,10 +532,11 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── EXPERIENCE ── */}
       <section id="experience" className="reveal section-shell">
         <div className="section-heading">
           <p className="eyebrow">Experience</p>
-            <h2>Operational history with measurable product impact.</h2>
+          <h2>Built in production. Not just side projects.</h2>
         </div>
         <div className="timeline">
           {experience.map((item, index) => (
@@ -534,13 +559,14 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── PROJECTS ── */}
       <section id="projects" className="reveal section-shell">
         <div className="section-heading split-heading">
           <div>
             <p className="eyebrow">Projects</p>
-          <h2>Interfaces built for real product workflows.</h2>
+            <h2>Products I’ve shaped end to end.</h2>
           </div>
-          <p>Selected systems across wealth, analytics, retail investing, and commerce.</p>
+          <p>Wealth management, retail investing, analytics, and commerce. Built for real users with real stakes.</p>
         </div>
         <div className="project-grid">
           {projects.map((project) => (
@@ -568,6 +594,7 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── STATS ── */}
       <section id="achievements" className="reveal section-shell stats-band">
         <div className="stat-grid">
           {stats.map((item, index) => {
@@ -583,46 +610,34 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── CONTACT ── */}
       <section id="contact" className="reveal section-shell contact-section">
         <div className="section-heading">
           <p className="eyebrow">Contact</p>
-          <h2>Start a conversation about the next thing to build.</h2>
+          <h2>Let’s build something worth shipping.</h2>
         </div>
-        <div className="contact-grid">
-          <form className={`contact-form holo-card ${sent ? 'contact-sent' : ''}`} onSubmit={handleContactSubmit}>
-            <label>
-              Name
-              <input name="name" value={contact.name} onChange={handleContactChange} required placeholder="Your name" />
-            </label>
-            <label>
-              Email
-              <input type="email" name="email" value={contact.email} onChange={handleContactChange} required placeholder="Your email" />
-            </label>
-            <label>
-              Message
-              <textarea name="message" value={contact.message} onChange={handleContactChange} required rows={4} placeholder="Tell me about your project" />
-            </label>
-            <button type="submit">{sent ? 'Sent' : 'Send message'}</button>
-          </form>
-
-          <aside className="holo-card contact-panel">
+        <div className="contact-layout">
+          <p className="contact-intro">
+            I’m open to the right opportunity. That could be a product-focused frontend role, a team working on something genuinely interesting, or a freelance project worth putting real effort into. Drop a line and let’s talk.
+          </p>
+          <div className="contact-pills-grid">
             <button type="button" onClick={handleCopyEmail} className="contact-pill">
               <Icon name="mail" />
-              {copied ? 'Email copied' : profile.email}
+              <span>{copied ? 'Copied to clipboard ✓' : profile.email}</span>
             </button>
             <a href={profile.github} target="_blank" rel="noreferrer" className="contact-pill">
               <Icon name="github" />
-              GitHub
+              <span>GitHub</span>
             </a>
             <a href={profile.linkedin} target="_blank" rel="noreferrer" className="contact-pill">
               <Icon name="linkedin" />
-              LinkedIn
+              <span>LinkedIn</span>
             </a>
             <a href={`tel:${profile.phone}`} className="contact-pill">
               <Icon name="phone" />
-              {profile.phone}
+              <span>{profile.phone}</span>
             </a>
-          </aside>
+          </div>
         </div>
       </section>
 
