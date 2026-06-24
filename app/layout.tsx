@@ -1,14 +1,15 @@
 import type { Metadata } from 'next';
 import Script from 'next/script';
 import './globals.css';
+import portfolio from './data/portfolio.json';
 
 export const metadata: Metadata = {
-  title: 'Kanishk Chhabra - Frontend Developer | Delhi',
-  description: 'Kanishk Chhabra is a Delhi-based frontend developer with 3+ years of experience building high-performance React and Next.js products.',
+  title: portfolio.content.metaTitle,
+  description: portfolio.content.metaDescription,
   metadataBase: new URL('https://kanishk-portfolio.vercel.app'),
   openGraph: {
-    title: 'Kanishk Chhabra - Frontend Developer',
-    description: 'Portfolio for a frontend engineer with React, Next.js, and TypeScript experience.',
+    title: portfolio.content.openGraphTitle,
+    description: portfolio.content.openGraphDescription,
     type: 'website',
   },
 };

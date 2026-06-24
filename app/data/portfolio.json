@@ -1,61 +1,163 @@
 {
   "profile": {
     "name": "Kanishk Chhabra",
-    "role": "Frontend Developer",
+    "role": "Software Development Engineer",
     "location": "Delhi, India",
     "email": "kanishk.chhabra2000@gmail.com",
-    "phone": "+919310429178",
+    "phone": "+91 93104 29178",
     "github": "https://github.com/KanCode18",
     "linkedin": "https://www.linkedin.com/in/kanishk-chhabra-28598a1b5/",
     "resumeHref": "/resume",
-    "summary": "Frontend Developer with 3+ years of experience building scalable, high-performance web applications using React.js, Next.js, TypeScript, Redux, and Tailwind CSS. Strong focus on performance optimization, reusable UI components, complex state management, and API integrations.",
-    "heroLine": "Building fast, scalable, and beautiful web products — currently SDE-1 at Pantelwar."
+    "summary": "Full Stack Developer with 3+ years of experience building scalable web applications using React.js, Next.js, TypeScript, Tailwind CSS, REST APIs, and modern frontend architecture. Experienced in reusable UI components, backend service integration, SDLC collaboration, and high-performance Agile delivery.",
+    "heroLine": "Building scalable, high-performance web applications with React, Next.js, TypeScript, and modern frontend architecture."
+  },
+  "content": {
+    "metaTitle": "Kanishk Chhabra - Software Development Engineer | Delhi",
+    "metaDescription": "Kanishk Chhabra is a Delhi-based software development engineer with 3+ years of experience building scalable React, Next.js, TypeScript, and REST API-driven web applications.",
+    "openGraphTitle": "Kanishk Chhabra - Software Development Engineer",
+    "openGraphDescription": "Portfolio for a full stack developer with React, Next.js, TypeScript, and REST API integration experience.",
+    "navLinks": [
+      { "label": "About", "href": "#about" },
+      { "label": "Experience", "href": "#experience" },
+      { "label": "Projects", "href": "#projects" },
+      { "label": "Contact", "href": "#contact" }
+    ],
+    "heroEyebrow": "Software Development Engineer - Delhi, India",
+    "typedLine": "Full stack web application builder",
+    "heroNotes": [
+      "I build web applications that feel fast, intentional, and reliable. Currently working on wealth management platforms that handle portfolios worth Rs 100 Cr+.",
+      "Outside work I've been exploring how AI fits into the design and engineering workflow. Faster prototyping, smarter iteration, less time on the boring parts."
+    ],
+    "aboutEyebrow": "About",
+    "aboutHeading": "Three years of shipping and still raising the bar.",
+    "aboutParagraphs": [
+      "I'm a software development engineer who genuinely cares about the craft. Clean component architecture, tight performance budgets, API-driven workflows, and UIs that don't just work but feel right. I've spent the last three years building production systems in the wealth and fintech space, working across React, Next.js, TypeScript, and REST APIs on codebases where real money moves every day.",
+      "I think the best web application work sits right at the intersection of engineering rigour and design sensibility. Whether I'm refactoring a 200K-line codebase or shipping something new from scratch, I try to bring the same level of care to both."
+    ],
+    "signals": ["Delhi, India", "SDE-1 - Pantelwar", "3+ years", "Open to opportunities"],
+    "skillsEyebrow": "Tech I work with",
+    "experienceEyebrow": "Experience",
+    "experienceHeading": "Built in production. Not just side projects.",
+    "projectsEyebrow": "Projects",
+    "projectsHeading": "Products I've shaped end to end.",
+    "projectsIntro": "Wealth management, retail investing, analytics, and commerce. Built for real users with real stakes.",
+    "contactEyebrow": "Contact",
+    "contactHeading": "Let's build something worth shipping.",
+    "contactIntro": "I'm open to the right opportunity. That could be a product-focused software engineering role, a team working on something genuinely interesting, or a freelance project worth putting real effort into. Drop a line and let's talk.",
+    "primaryActionLabel": "See my work",
+    "resumeActionLabel": "View resume",
+    "projectActionLabel": "View project",
+    "copySuccessLabel": "Copied to clipboard",
+    "socialLabels": {
+      "github": "GitHub",
+      "linkedin": "LinkedIn"
+    },
+    "reactorAriaLabel": "Activate arc reactor pulse",
+    "reactorReadouts": ["UX systems: stable", "React systems: online", "Performance budget: clean"],
+    "primaryNavigationLabel": "Primary navigation",
+    "mobileNavigationLabel": "Mobile navigation",
+    "mobileMenuLabel": "Toggle navigation menu",
+    "footerCopyright": "© Copyright 2026",
+    "footerNote": "Built with Next.js + Tailwind"
   },
   "skills": [
     "React.js",
     "Next.js",
     "TypeScript",
     "JavaScript (ES6+)",
-    "Tailwind CSS",
+    "RTK Query",
+    "Tanstack Query",
     "Redux / Redux Toolkit",
+    "Context API",
+    "Zustand",
+    "Tailwind CSS",
+    "HTML5",
+    "CSS3",
     "Material UI",
     "ShadCN",
     "GSAP",
+    "Responsive UI Development",
     "REST APIs",
+    "API Integration",
     "Node.js",
-    "Strapi CMS",
+    "Python",
+    "PostgreSQL",
+    "MongoDB",
+    "SQL / DBMS",
+    "Postman",
     "Git / GitHub",
     "Docker",
-    "Agile / Scrum"
+    "CI/CD Concepts",
+    "Jira",
+    "Agile Scrum",
+    "SDLC",
+    "Code Reviews",
+    "Documentation",
+    "DSA",
+    "Performance Optimization"
+  ],
+  "skillGroups": [
+    {
+      "label": "Frontend",
+      "icon": "FE",
+      "items": ["React.js", "Next.js", "TypeScript", "JavaScript (ES6+)", "RTK Query", "Tanstack Query (React Query)", "Redux", "Redux Toolkit", "Context API", "Zustand", "Tailwind CSS", "HTML5", "CSS3", "Material UI", "ShadCN", "GSAP", "Responsive UI Development"]
+    },
+    {
+      "label": "Backend / APIs",
+      "icon": "API",
+      "items": ["Python", "REST APIs", "Node.js", "API Integration", "Postman"]
+    },
+    {
+      "label": "Database",
+      "icon": "DB",
+      "items": ["PostgreSQL", "MongoDB", "SQL", "DBMS"]
+    },
+    {
+      "label": "Tools & DevOps",
+      "icon": "OPS",
+      "items": ["Git", "GitHub", "Docker", "CI/CD Concepts", "Jira", "VS Code"]
+    },
+    {
+      "label": "Methodologies",
+      "icon": "SDLC",
+      "items": ["Agile Scrum", "SDLC", "Code Reviews", "Documentation", "Cross-functional Collaboration"]
+    },
+    {
+      "label": "Other",
+      "icon": "CS",
+      "items": ["DSA", "Problem Solving", "Performance Optimization"]
+    }
   ],
   "experience": [
     {
       "company": "Pantelwar",
       "role": "SDE-1",
-      "dates": "Jan 2025 – Present",
+      "dates": "Jan 2025 - Present",
       "location": "On-Site, India",
       "bullets": [
-        "Led UI development for scalable wealth & investment management features across 5 major React projects.",
+        "Led UI development for scalable wealth and investment management features across 5 major React projects.",
+        "Collaborated with backend teams to integrate REST APIs, authentication workflows, and secure client-server communication across multiple applications.",
         "Integrated 10+ reusable React components, reducing UI development cycles in upcoming releases.",
-        "Collaborated with backend/API teams for seamless data flow and authentication layers.",
-        "Maintained and refactored a 200,000+ line codebase for performance and maintainability."
+        "Maintained and optimized a 200,000+ line codebase, improving performance, maintainability, scalability, and overall application stability.",
+        "Participated in code reviews, sprint planning, production deployments, debugging, and end-to-end SDLC activities across multiple product releases."
       ]
     },
     {
       "company": "Pantelwar",
       "role": "Associate Software Developer",
-      "dates": "Sep 2023 – Jan 2025",
+      "dates": "Sep 2023 - Jan 2025",
       "location": "Noida, India",
       "bullets": [
-        "Developed dashboards and workflows improving portfolio monitoring & user decision-making.",
+        "Developed data-driven dashboards and workflow automation features improving portfolio monitoring, reporting, and user decision-making.",
+        "Integrated multiple REST APIs and optimized frontend data-fetching workflows for improved responsiveness and user experience.",
         "Built client-status tracking, role-based access, advisor dashboards, and improved onboarding UX.",
-        "Collaborated in Agile Scrum with daily standups, sprint planning & production releases."
+        "Collaborated in Agile Scrum with daily standups, sprint planning, and production releases."
       ]
     },
     {
       "company": "QSpiders",
       "role": "Full Stack Development Trainee",
-      "dates": "Mar 2023 – Sep 2023",
+      "dates": "Mar 2023 - Sep 2023",
       "location": "Noida, India",
       "bullets": [
         "Trained in HTML, CSS, JavaScript, React, DBMS, SQL, Java, Hibernate, and Spring basics.",
@@ -67,72 +169,72 @@
     {
       "company": "IBM Skills Network",
       "role": "AI/ML Intern",
-      "dates": "Dec 2022 – Feb 2023",
-      "stack": ["Python", "AI", "ML"]
+      "dates": "Dec 2022 - Feb 2023",
+      "stack": ["Python", "Pandas", "Machine Learning", "Data Analysis"]
     },
     {
       "company": "Besant Technologies",
       "role": "Python Developer Trainee",
-      "dates": "Oct 2022 – Dec 2022",
-      "stack": ["Python"]
+      "dates": "Oct 2022 - Dec 2022",
+      "stack": ["Python", "REST API Development", "OOP Concepts", "Data Structures"]
     },
     {
       "company": "Pantech ProLabs",
       "role": "Machine Learning Intern",
-      "dates": "Aug 2022 – Oct 2022",
+      "dates": "Aug 2022 - Oct 2022",
       "stack": ["ML", "AI", "Data Science"]
     }
   ],
   "education": {
     "institution": "HMR Institute of Technology & Management (GGSIPU)",
-    "degree": "B.Tech – Computer Science Engineering",
-    "dates": "2019 – 2023",
+    "degree": "B.Tech - Computer Science Engineering",
+    "dates": "2019 - 2023",
     "gpa": "8.8 / 10"
   },
   "projects": [
     {
-      "title": "360 ONE RM Workspace",
-      "description": "Wealth management dashboard for Relationship Managers handling portfolios worth ₹100 Cr+.",
-      "stack": ["React", "Next.js", "Redux", "REST APIs", "Material UI"],
-      "highlight": "Boosted RM productivity by 25%, reduced UI change effort by 80%.",
-      "dates": "Jan 2024 – Jun 2025",
-      "link": "https://www.360.one/wealth/home",
-      "type": "Company project",
-          "fallbackImage": "/project-fallbacks/360-one.svg"
+      "title": "Ravokk",
+      "description": "Modern e-commerce clothing platform with product browsing, state management, responsive UI components, and database-driven workflows.",
+      "stack": ["Next.js", "TypeScript", "Zustand", "Tailwind CSS", "PostgreSQL"],
+      "highlight": "Built a performance-focused personal commerce platform with reusable architecture and seamless cross-device UX.",
+      "link": "https://ravokk.vercel.app/",
+      "type": "Personal project"
+    },
+    {
+      "title": "OmnaData Insights and Analysis",
+      "description": "Research and analytics platform with role-based access, API-driven data workflows, and subscription-based report access.",
+      "stack": ["React", "Next.js", "Tailwind CSS", "REST APIs"],
+      "highlight": "Implemented analyst management workflows for creating, updating, and controlling structured report insights.",
+      "dates": "Oct 2025 - Present",
+      "link": "https://www.omnadata.com/",
+      "type": "Client project"
     },
     {
       "title": "Fingyani Platform",
       "description": "Retail investment bucket UI for NSE/BSE markets, similar to Smallcase, with an RIA portal for advisor-client coordination.",
       "stack": ["React", "Next.js", "Material UI", "Redux", "REST APIs"],
-      "highlight": "Improved data interaction efficiency by 30%, reduced advisor-client coordination time by 20%.",
-      "dates": "Sep 2023 – Present",
+      "highlight": "Improved platform responsiveness by 30% and reduced advisor-client coordination time by 20%.",
+      "dates": "Sep 2023 - Present",
       "link": "https://fingyani.com/",
       "type": "Company project"
     },
     {
-      "title": "OmnaData Insights",
-      "description": "Research and analytics platform with subscription-based report access and analyst management workflows for structured report insights.",
-      "stack": ["React", "Next.js", "Tailwind CSS"],
-      "highlight": "Built end-to-end analytics experiences for data-centric research teams.",
-      "dates": "Oct 2025 – Present",
-      "link": "https://www.omnadata.com/",
-      "type": "Company project"
-    },
-    {
-      "title": "RavokkWear",
-      "description": "Gen Z dark streetwear e-commerce storefront with admin panel, WhatsApp checkout, and hero theming system.",
-      "stack": ["Next.js", "TypeScript", "Tailwind CSS", "Supabase", "Zustand", "Cloudinary"],
-      "highlight": "Solo-built full-stack brand with product management, cart, and admin workflows.",
-      "link": "https://ravokk.vercel.app/",
-      "type": "Personal project"
+      "title": "360 ONE RM Workspace",
+      "description": "Wealth management dashboard used by Relationship Managers handling portfolios worth Rs 100 Cr+.",
+      "stack": ["React", "Next.js", "Redux", "REST APIs", "Material UI"],
+      "highlight": "Increased RM productivity by 25% with visual analytics and instant access workflows; reduced UI change effort by 80% using reusable components.",
+      "dates": "Jan 2024 - Jun 2025",
+      "link": "https://www.360.one/wealth/home",
+      "type": "Client project",
+      "fallbackImage": "/project-fallbacks/360-one.svg"
     }
   ],
   "stats": [
     { "label": "RM productivity improvement", "value": 25, "suffix": "%" },
     { "label": "Reduction in UI development effort", "value": 40, "suffix": "%" },
-    { "label": "Improvement in loading & interaction efficiency", "value": 30, "suffix": "%" },
-    { "label": "Reduction in UI change effort (360 ONE)", "value": 80, "suffix": "%" },
+    { "label": "Improvement in platform responsiveness", "value": 30, "suffix": "%" },
+    { "label": "Reduction in UI change effort", "value": 80, "suffix": "%" },
     { "label": "Lines of codebase maintained", "value": 200, "suffix": "K+" },
-    { "label": "Cross-team engineering efficiency gain", "value": 30, "suffix": "%" }
+    { "label": "Reusable React components integrated", "value": 10, "suffix": "+" }
   ]
 }

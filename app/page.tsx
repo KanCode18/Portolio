@@ -25,38 +25,8 @@ type ProjectCard = {
 
 type ThemeMode = 'dark' | 'light';
 
-const navLinks = [
-  { label: 'About', href: '#about' },
-  { label: 'Experience', href: '#experience' },
-  { label: 'Projects', href: '#projects' },
-  { label: 'Contact', href: '#contact' },
-];
-
-const { profile, skills, experience, projects, stats } = portfolio;
-
-// Skill categories for the new skills display
-const skillCategories = [
-  {
-    label: 'Frontend',
-    icon: '◈',
-    items: ['React.js', 'Next.js', 'TypeScript', 'JavaScript (ES6+)', 'Tailwind CSS', 'GSAP'],
-  },
-  {
-    label: 'UI & Design',
-    icon: '◇',
-    items: ['Material UI', 'ShadCN', 'Responsive UI/UX', 'Design Systems', 'Web Performance'],
-  },
-  {
-    label: 'State & Data',
-    icon: '◉',
-    items: ['Redux', 'Redux Toolkit', 'Context API', 'REST APIs', 'Strapi CMS'],
-  },
-  {
-    label: 'Tooling',
-    icon: '◎',
-    items: ['Git', 'GitHub', 'Docker', 'Postman', 'Jira', 'Agile / Scrum'],
-  },
-];
+const { profile, content, skillGroups, experience, projects, stats } = portfolio;
+const navLinks = content.navLinks;
 
 function normalizeProjectUrl(link: string) {
   if (!link || link === '#') return null;
@@ -179,7 +149,7 @@ export default function Home() {
   const [sent, setSent] = useState(false);
   const [pulseMode, setPulseMode] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [statCounts, setStatCounts] = useState<number[]>([0, 0, 0, 0, 0, 0]);
+  const [statCounts, setStatCounts] = useState<number[]>(() => stats.map(() => 0));
   const [contact, setContact] = useState({ name: '', email: '', message: '' });
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const cursorDotRef = useRef<HTMLDivElement>(null);
@@ -197,7 +167,7 @@ export default function Home() {
   }, [theme]);
 
   useEffect(() => {
-    const text = 'AI-focused frontend builder';
+    const text = content.typedLine;
     if (typedText.length < text.length) {
       const timer = window.setTimeout(() => setTypedText(text.slice(0, typedText.length + 1)), 72);
       return () => window.clearTimeout(timer);
@@ -412,7 +382,7 @@ export default function Home() {
 
       <header className={`top-nav ${scrolled ? 'top-nav-scrolled' : ''}`}>
         <span className="nav-brand">KC</span>
-        <nav className="nav-track" aria-label="Primary navigation">
+        <nav className="nav-track" aria-label={content.primaryNavigationLabel}>
           {navLinks.map((item) => (
             <a key={item.href} href={item.href} className="nav-link">
               {item.label}
@@ -423,7 +393,7 @@ export default function Home() {
           type="button"
           className="mobile-menu-button"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          aria-label="Toggle navigation menu"
+          aria-label={content.mobileMenuLabel}
           aria-expanded={mobileMenuOpen}
         >
           <span />
@@ -433,7 +403,7 @@ export default function Home() {
       </header>
 
       {mobileMenuOpen && (
-        <nav className="mobile-drawer" aria-label="Mobile navigation">
+        <nav className="mobile-drawer" aria-label={content.mobileNavigationLabel}>
           {navLinks.map((item) => (
             <a
               key={item.href}
@@ -452,7 +422,7 @@ export default function Home() {
         <div className="holo-background" aria-hidden="true" />
         <div className="hero-grid">
           <div className="hero-copy">
-            <p className="eyebrow">Frontend Developer · Delhi, India</p>
+            <p className="eyebrow">{content.heroEyebrow}</p>
             <h1>{profile.name}</h1>
             <div className="hero-tagline">
               <span>{typedText}</span>
@@ -460,29 +430,30 @@ export default function Home() {
             </div>
             <p className="hero-desc">{profile.heroLine}</p>
             <div className="hero-ai-note">
-              <p>I build interfaces that feel fast, intentional, and alive. Currently working on wealth management platforms that handle portfolios worth ₹100 Cr+.</p>
-              <p>Outside work I’ve been exploring how AI fits into the design and engineering workflow. Faster prototyping, smarter iteration, less time on the boring parts.</p>
+              {content.heroNotes.map((note) => (
+                <p key={note}>{note}</p>
+              ))}
             </div>
             <div className="hero-actions">
               <a href="#projects" className="primary-action">
-                See my work
+                {content.primaryActionLabel}
               </a>
               {profile.resumeHref ? (
                 <a href={profile.resumeHref} target="_blank" rel="noreferrer" className="secondary-action">
-                  View résumé
+                  {content.resumeActionLabel}
                 </a>
               ) : null}
             </div>
           </div>
 
           <div className="hero-panel holo-card">
-            <button type="button" className="arc-trigger" onClick={triggerArc} aria-label="Activate arc reactor pulse">
+            <button type="button" className="arc-trigger" onClick={triggerArc} aria-label={content.reactorAriaLabel}>
               <ArcReactor active={pulseMode} />
             </button>
             <div className="reactor-readouts">
-              <span>UX systems: stable</span>
-              <span>React systems: online</span>
-              <span>Performance budget: clean</span>
+              {content.reactorReadouts.map((readout) => (
+                <span key={readout}>{readout}</span>
+              ))}
             </div>
           </div>
         </div>
@@ -491,30 +462,28 @@ export default function Home() {
       {/* ── ABOUT ── */}
       <section id="about" className="reveal section-shell">
         <div className="section-heading">
-          <p className="eyebrow">About</p>
-          <h2>Three years of shipping and still raising the bar.</h2>
+          <p className="eyebrow">{content.aboutEyebrow}</p>
+          <h2>{content.aboutHeading}</h2>
         </div>
         <div className="about-grid">
           <article className="holo-card large-card">
-            <p>
-              I’m a frontend developer who genuinely cares about the craft. Clean component architecture, tight performance budgets, UIs that don’t just work but feel right. I’ve spent the last three years building production systems in the wealth and fintech space, working across React, Next.js, and TypeScript on codebases where real money moves every day.
-            </p>
-            <p className="about-second">
-              I think the best frontend work sits right at the intersection of engineering rigour and design sensibility. Whether I’m refactoring a 200K-line codebase or shipping something new from scratch, I try to bring the same level of care to both.
-            </p>
+            {content.aboutParagraphs.map((paragraph, index) => (
+              <p key={paragraph} className={index === 1 ? 'about-second' : undefined}>
+                {paragraph}
+              </p>
+            ))}
             <div className="signal-strip">
-              <span>{profile.location}</span>
-              <span>SDE-1 · Pantelwar</span>
-              <span>3+ years</span>
-              <span>Open to opportunities</span>
+              {content.signals.map((signal) => (
+                <span key={signal}>{signal}</span>
+              ))}
             </div>
           </article>
 
           {/* ── SKILLS PANEL — categories replace bars ── */}
           <aside className="holo-card skills-panel">
-            <p className="eyebrow">Tech I work with</p>
+            <p className="eyebrow">{content.skillsEyebrow}</p>
             <div className="skill-categories">
-              {skillCategories.map((cat) => (
+              {skillGroups.map((cat) => (
                 <div key={cat.label} className="skill-category">
                   <div className="skill-cat-header">
                     <span className="skill-cat-icon" aria-hidden="true">{cat.icon}</span>
@@ -535,8 +504,8 @@ export default function Home() {
       {/* ── EXPERIENCE ── */}
       <section id="experience" className="reveal section-shell">
         <div className="section-heading">
-          <p className="eyebrow">Experience</p>
-          <h2>Built in production. Not just side projects.</h2>
+          <p className="eyebrow">{content.experienceEyebrow}</p>
+          <h2>{content.experienceHeading}</h2>
         </div>
         <div className="timeline">
           {experience.map((item, index) => (
@@ -563,10 +532,10 @@ export default function Home() {
       <section id="projects" className="reveal section-shell">
         <div className="section-heading split-heading">
           <div>
-            <p className="eyebrow">Projects</p>
-            <h2>Products I’ve shaped end to end.</h2>
+            <p className="eyebrow">{content.projectsEyebrow}</p>
+            <h2>{content.projectsHeading}</h2>
           </div>
-          <p>Wealth management, retail investing, analytics, and commerce. Built for real users with real stakes.</p>
+          <p>{content.projectsIntro}</p>
         </div>
         <div className="project-grid">
           {projects.map((project) => (
@@ -586,7 +555,7 @@ export default function Home() {
                 </div>
                 <p className="impact-line">{project.highlight}</p>
                 <a href={project.link} target="_blank" rel="noreferrer" className="project-link">
-                  View project <Icon name="external" />
+                  {content.projectActionLabel} <Icon name="external" />
                 </a>
               </div>
             </article>
@@ -613,25 +582,25 @@ export default function Home() {
       {/* ── CONTACT ── */}
       <section id="contact" className="reveal section-shell contact-section">
         <div className="section-heading">
-          <p className="eyebrow">Contact</p>
-          <h2>Let’s build something worth shipping.</h2>
+          <p className="eyebrow">{content.contactEyebrow}</p>
+          <h2>{content.contactHeading}</h2>
         </div>
         <div className="contact-layout">
           <p className="contact-intro">
-            I’m open to the right opportunity. That could be a product-focused frontend role, a team working on something genuinely interesting, or a freelance project worth putting real effort into. Drop a line and let’s talk.
+            {content.contactIntro}
           </p>
           <div className="contact-pills-grid">
             <button type="button" onClick={handleCopyEmail} className="contact-pill">
               <Icon name="mail" />
-              <span>{copied ? 'Copied to clipboard ✓' : profile.email}</span>
+              <span>{copied ? content.copySuccessLabel : profile.email}</span>
             </button>
             <a href={profile.github} target="_blank" rel="noreferrer" className="contact-pill">
               <Icon name="github" />
-              <span>GitHub</span>
+              <span>{content.socialLabels.github}</span>
             </a>
             <a href={profile.linkedin} target="_blank" rel="noreferrer" className="contact-pill">
               <Icon name="linkedin" />
-              <span>LinkedIn</span>
+              <span>{content.socialLabels.linkedin}</span>
             </a>
             <a href={`tel:${profile.phone}`} className="contact-pill">
               <Icon name="phone" />
@@ -642,8 +611,8 @@ export default function Home() {
       </section>
 
       <footer className="site-footer">
-        <span>© 2026 {profile.name}</span>
-        <span>Built with Next.js + Tailwind</span>
+        <span>{content.footerCopyright} {profile.name}</span>
+        <span>{content.footerNote}</span>
       </footer>
     </main>
   );
