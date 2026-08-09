@@ -1,17 +1,12 @@
 ﻿'use client';
 
 import {
-  type ChangeEvent,
   type CSSProperties,
-  type FormEvent,
-  type MouseEvent as ReactMouseEvent,
   useEffect,
-  useMemo,
-  useRef,
   useState,
 } from 'react';
 import portfolio from './data/portfolio.json';
-import ArcReactor from './components/arc-reactor';
+import ThreeHero from './components/ThreeHero';
 
 type ProjectCard = {
   title: string;
@@ -27,6 +22,7 @@ type ThemeMode = 'dark' | 'light';
 
 const { profile, content, skillGroups, experience, projects, stats } = portfolio;
 const navLinks = content.navLinks;
+const heroSkillTags = Array.from(new Set(skillGroups.flatMap((group) => group.items))).slice(0, 10);
 
 function normalizeProjectUrl(link: string) {
   if (!link || link === '#') return null;
@@ -146,19 +142,29 @@ export default function Home() {
   const [theme, setTheme] = useState<ThemeMode>('dark');
   const [typedText, setTypedText] = useState('');
   const [copied, setCopied] = useState(false);
-  const [sent, setSent] = useState(false);
-  const [pulseMode, setPulseMode] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [activeSection, setActiveSection] = useState('');
   const [statCounts, setStatCounts] = useState<number[]>(() => stats.map(() => 0));
-  const [contact, setContact] = useState({ name: '', email: '', message: '' });
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const cursorDotRef = useRef<HTMLDivElement>(null);
-  const cursorRingRef = useRef<HTMLDivElement>(null);
-  const heroRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     const savedTheme = window.localStorage.getItem('theme');
     if (savedTheme === 'light') setTheme('light');
+  }, []);
+
+  useEffect(() => {
+    if (window.innerWidth <= 760) {
+      const resetScroll = () => {
+        window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+      };
+
+      resetScroll();
+      window.setTimeout(resetScroll, 0);
+      window.setTimeout(resetScroll, 120);
+    }
   }, []);
 
   useEffect(() => {
@@ -175,7 +181,13 @@ export default function Home() {
   }, [typedText]);
 
   useEffect(() => {
-    const elements = document.querySelectorAll('.reveal');
+    const elements = Array.from(document.querySelectorAll('.reveal'));
+
+    if (window.innerWidth <= 760) {
+      elements.forEach((element) => element.classList.add('visible'));
+      return;
+    }
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -184,93 +196,27 @@ export default function Home() {
       },
       { threshold: 0.18 }
     );
+
     elements.forEach((element) => observer.observe(element));
     return () => elements.forEach((element) => observer.unobserve(element));
   }, []);
 
   useEffect(() => {
-    const handleMove = (event: globalThis.MouseEvent) => {
-      cursorDotRef.current?.style.setProperty('--cursor-x', `${event.clientX}px`);
-      cursorDotRef.current?.style.setProperty('--cursor-y', `${event.clientY}px`);
-      cursorRingRef.current?.style.setProperty('--cursor-x', `${event.clientX}px`);
-      cursorRingRef.current?.style.setProperty('--cursor-y', `${event.clientY}px`);
-    };
-    window.addEventListener('mousemove', handleMove);
-    return () => window.removeEventListener('mousemove', handleMove);
-  }, []);
+    const sectionIds = navLinks.map((item) => item.href.slice(1));
+    const onScroll = () => {
+      setScrolled(window.scrollY > 24);
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      setScrollProgress(maxScroll > 0 ? (window.scrollY / maxScroll) * 100 : 0);
 
-  useEffect(() => {
-    const hero = heroRef.current ?? document.getElementById('hero');
-    if (!hero) return;
-
-    const reactor = hero.querySelector('.arc-reactor') as HTMLElement | null;
-    let idleRaf = 0;
-    let lastMove = performance.now();
-
-    const setVars = (x: number, y: number, intensity: number) => {
-      if (!reactor) return;
-      reactor.style.setProperty('--arc-tilt-x', `${x}deg`);
-      reactor.style.setProperty('--arc-tilt-y', `${y}deg`);
-      reactor.style.setProperty('--arc-intensity', `${intensity}`);
-    };
-
-    const handlePointer = (ev: PointerEvent) => {
-      const rect = hero.getBoundingClientRect();
-      const px = (ev.clientX - rect.left) / rect.width - 0.5;
-      const py = (ev.clientY - rect.top) / rect.height - 0.5;
-      const tiltX = (-py * 10).toFixed(2);
-      const tiltY = (px * 10).toFixed(2);
-      const intensity = Math.min(1.6, Math.hypot(px, py) * 1.8 + 0.2).toFixed(3);
-      setVars(Number(tiltX), Number(tiltY), Number(intensity));
-      lastMove = performance.now();
-      if (Number(intensity) > 1.0 && reactor) {
-        reactor.classList.add('arc-scan');
-        window.setTimeout(() => reactor.classList.remove('arc-scan'), 700);
-      }
-    };
-
-    hero.addEventListener('pointermove', handlePointer);
-
-    let lastScan = performance.now();
-    let nextScan = 4200 + Math.random() * 5300;
-
-    const triggerScan = () => {
-      if (!reactor) return;
-      reactor.classList.add('arc-scan');
-      const sparks = Array.from(reactor.querySelectorAll('.arc-sparks span')) as HTMLElement[];
-      sparks.forEach((s) => {
-        const angle = Math.random() * Math.PI * 2;
-        const r = 42 + Math.random() * 76;
-        s.style.setProperty('--sx', `${Math.cos(angle) * r}px`);
-        s.style.setProperty('--sy', `${Math.sin(angle) * r}px`);
+      const current = sectionIds.find((id) => {
+        const section = document.getElementById(id);
+        if (!section) return false;
+        const { top, bottom } = section.getBoundingClientRect();
+        return top <= window.innerHeight * 0.4 && bottom >= window.innerHeight * 0.35;
       });
-      window.setTimeout(() => reactor.classList.remove('arc-scan'), 900);
-      lastScan = performance.now();
-      nextScan = 4200 + Math.random() * 5300;
+      if (current) setActiveSection(current);
     };
 
-    const idleLoop = () => {
-      const t = performance.now() * 0.001;
-      if (performance.now() - lastMove > 800) {
-        const ix = Math.sin(t * 0.9) * 2.2;
-        const iy = Math.cos(t * 1.1) * 2.6;
-        const intensity = 0.18 + (Math.sin(t * 0.7) + 1) * 0.06;
-        setVars(ix, iy, Number(intensity.toFixed(3)));
-      }
-      if (performance.now() - lastScan > nextScan) triggerScan();
-      idleRaf = window.requestAnimationFrame(idleLoop);
-    };
-
-    idleRaf = window.requestAnimationFrame(idleLoop);
-
-    return () => {
-      hero.removeEventListener('pointermove', handlePointer);
-      window.cancelAnimationFrame(idleRaf);
-    };
-  }, [pulseMode]);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
@@ -319,13 +265,6 @@ export default function Home() {
     return () => observer.disconnect();
   }, []);
 
-  const toggleTheme = () => setTheme((current) => (current === 'dark' ? 'light' : 'dark'));
-
-  const triggerArc = () => {
-    setPulseMode(true);
-    window.setTimeout(() => setPulseMode(false), 1600);
-  };
-
   const handleCopyEmail = async () => {
     try {
       await navigator.clipboard.writeText(profile.email);
@@ -336,55 +275,15 @@ export default function Home() {
     }
   };
 
-  const handleContactChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = event.target;
-    setContact((current) => ({ ...current, [name]: value }));
-  };
-
-  const handleContactSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const form = event.currentTarget;
-    const formData = new FormData(form);
-    try {
-      const res = await fetch('/api/contact', { method: 'POST', body: formData });
-      if (res.ok) {
-        setSent(true);
-      } else {
-        console.error('send failed', await res.text());
-        setSent(false);
-        alert('Failed to send message.');
-      }
-    } catch (err) {
-      console.error(err);
-      alert('Error sending message');
-    }
-    window.setTimeout(() => setSent(false), 2600);
-  };
-
-  const handleTilt = (event: ReactMouseEvent<HTMLElement>) => {
-    const card = event.currentTarget;
-    const rect = card.getBoundingClientRect();
-    const x = ((event.clientX - rect.left) / rect.width - 0.5) * 16;
-    const y = ((event.clientY - rect.top) / rect.height - 0.5) * -16;
-    card.style.setProperty('--tilt-x', `${y}deg`);
-    card.style.setProperty('--tilt-y', `${x}deg`);
-  };
-
-  const resetTilt = (event: ReactMouseEvent<HTMLElement>) => {
-    event.currentTarget.style.setProperty('--tilt-x', '0deg');
-    event.currentTarget.style.setProperty('--tilt-y', '0deg');
-  };
-
   return (
-    <main className={`site-shell ${theme === 'light' ? 'light-theme' : ''} ${pulseMode ? 'reactor-pulse' : ''}`}>
-      <div ref={cursorRingRef} className="cursor-halo" aria-hidden="true" />
-      <div ref={cursorDotRef} className="cursor-dot" aria-hidden="true" />
+    <main className={`site-shell ${theme === 'light' ? 'light-theme' : ''}`}>
+      <div className="scroll-progress" style={{ transform: `scaleX(${scrollProgress / 100})` }} aria-hidden="true" />
 
       <header className={`top-nav ${scrolled ? 'top-nav-scrolled' : ''}`}>
         <span className="nav-brand">KC</span>
         <nav className="nav-track" aria-label={content.primaryNavigationLabel}>
           {navLinks.map((item) => (
-            <a key={item.href} href={item.href} className="nav-link">
+            <a key={item.href} href={item.href} className={`nav-link ${activeSection === item.href.slice(1) ? 'nav-link-active' : ''}`}>
               {item.label}
             </a>
           ))}
@@ -418,7 +317,10 @@ export default function Home() {
       )}
 
       {/* ── HERO ── */}
-      <section id="hero" ref={heroRef} className="hero-section section-shell">
+      <section id="hero" className="hero-section section-shell">
+        <div className="hero-scene" aria-hidden="true">
+          <ThreeHero />
+        </div>
         <div className="holo-background" aria-hidden="true" />
         <div className="hero-grid">
           <div className="hero-copy">
@@ -429,11 +331,6 @@ export default function Home() {
               <i aria-hidden="true" />
             </div>
             <p className="hero-desc">{profile.heroLine}</p>
-            <div className="hero-ai-note">
-              {content.heroNotes.map((note) => (
-                <p key={note}>{note}</p>
-              ))}
-            </div>
             <div className="hero-actions">
               <a href="#projects" className="primary-action">
                 {content.primaryActionLabel}
@@ -450,18 +347,13 @@ export default function Home() {
                 </a>
               ) : null}
             </div>
-          </div>
-
-          <div className="hero-panel holo-card">
-            <button type="button" className="arc-trigger" onClick={triggerArc} aria-label={content.reactorAriaLabel}>
-              <ArcReactor active={pulseMode} />
-            </button>
-            <div className="reactor-readouts">
-              {content.reactorReadouts.map((readout) => (
-                <span key={readout}>{readout}</span>
+            <div className="hero-skill-strip" aria-label={content.skillsEyebrow}>
+              {heroSkillTags.map((skill) => (
+                <span key={skill}>{skill}</span>
               ))}
             </div>
           </div>
+
         </div>
       </section>
 
@@ -544,8 +436,8 @@ export default function Home() {
           <p>{content.projectsIntro}</p>
         </div>
         <div className="project-grid">
-          {projects.map((project) => (
-            <article key={project.title} className="project-card holo-card" onMouseMove={handleTilt} onMouseLeave={resetTilt}>
+          {projects.map((project, index) => (
+            <article key={project.title} className={`project-card project-card-${index + 1} holo-card`}>
               <ProjectPreview project={project} />
               <div className="project-body">
                 <div className="project-kicker">

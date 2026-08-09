@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import Script from 'next/script';
 import './globals.css';
 import portfolio from './data/portfolio.json';
@@ -12,6 +12,10 @@ export const metadata: Metadata = {
     description: portfolio.content.openGraphDescription,
     type: 'website',
   },
+};
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
