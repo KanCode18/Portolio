@@ -14,8 +14,8 @@ export default function ThreeHero() {
     const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
     camera.position.set(0, 0, 7);
 
-    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, preserveDrawingBuffer: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.8));
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.35));
     renderer.setClearColor(0x000000, 0);
     mount.appendChild(renderer.domElement);
 
@@ -24,11 +24,11 @@ export default function ThreeHero() {
 
     const geometry = new THREE.IcosahedronGeometry(1.55, 3);
     const material = new THREE.MeshStandardMaterial({
-      color: 0x4fd1ff,
-      roughness: 0.28,
-      metalness: 0.72,
-      emissive: 0x1a5a7f,
-      emissiveIntensity: 0.42,
+      color: 0x7cf7ad,
+      roughness: 0.34,
+      metalness: 0.66,
+      emissive: 0x174f2e,
+      emissiveIntensity: 0.34,
       wireframe: true,
     });
     const core = new THREE.Mesh(geometry, material);
@@ -47,9 +47,9 @@ export default function ThreeHero() {
     group.add(shell);
 
     const ringMaterial = new THREE.MeshBasicMaterial({
-      color: 0x8b5cf6,
+      color: 0xd6b36a,
       transparent: true,
-      opacity: 0.52,
+      opacity: 0.46,
       side: THREE.DoubleSide,
     });
     const rings = [2.3, 2.75, 3.18].map((radius, index) => {
@@ -61,7 +61,7 @@ export default function ThreeHero() {
     });
 
     const particlesGeometry = new THREE.BufferGeometry();
-    const particleCount = 90;
+    const particleCount = 54;
     const positions = new Float32Array(particleCount * 3);
     for (let index = 0; index < particleCount; index += 1) {
       const radius = 2.4 + Math.random() * 2.2;
@@ -86,7 +86,7 @@ export default function ThreeHero() {
     const keyLight = new THREE.PointLight(0x5eead4, 28, 20);
     keyLight.position.set(3, 3, 5);
     scene.add(keyLight);
-    const fillLight = new THREE.PointLight(0xf97316, 12, 16);
+    const fillLight = new THREE.PointLight(0xd6b36a, 10, 16);
     fillLight.position.set(-4, -2, 4);
     scene.add(fillLight);
     scene.add(new THREE.AmbientLight(0xffffff, 0.8));
@@ -142,6 +142,9 @@ export default function ThreeHero() {
       renderer.render(scene, camera);
     };
 
+    const resizeObserver = new ResizeObserver(resize);
+    resizeObserver.observe(mount);
+
     resize();
     animate();
     window.addEventListener('resize', resize);
@@ -149,6 +152,7 @@ export default function ThreeHero() {
 
     return () => {
       window.cancelAnimationFrame(frame);
+      resizeObserver.disconnect();
       window.removeEventListener('resize', resize);
       mount.removeEventListener('pointermove', handlePointerMove);
       renderer.dispose();
