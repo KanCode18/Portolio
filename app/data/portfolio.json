@@ -1,46 +1,46 @@
 {
   "profile": {
     "name": "Kanishk Chhabra",
-    "role": "Software Development Engineer",
+    "role": "React.js Software Engineer",
     "location": "Delhi, India",
     "email": "kanishk.chhabra2000@gmail.com",
     "phone": "+91 93104 29178",
     "github": "https://github.com/KanCode18",
     "linkedin": "https://www.linkedin.com/in/kanishk-chhabra-28598a1b5/",
     "resumeHref": "/resume",
-    "summary": "Full Stack Developer with 3+ years of experience building scalable web applications using React.js, Next.js, TypeScript, Tailwind CSS, REST APIs, and modern frontend architecture. Experienced in reusable UI components, backend service integration, SDLC collaboration, and high-performance Agile delivery.",
-    "heroLine": "Building scalable, high-performance web applications with React, Next.js, TypeScript, and modern frontend architecture."
+    "summary": "React.js Engineer with 3+ years of experience shipping high-performance TypeScript applications. Improved responsiveness by 30% and cut UI development effort by 80% on large codebases (200K+ LOC). Strong background in monorepos (Turborepo), modern state management, performance optimization, and AI-assisted development with Claude, Cursor, and GitHub Copilot.",
+    "heroLine": "Shipping high-performance React and TypeScript products with a focus on speed, scale, and maintainability."
   },
   "content": {
-    "metaTitle": "Kanishk Chhabra - Software Development Engineer | Delhi",
-    "metaDescription": "Kanishk Chhabra is a Delhi-based software development engineer with 3+ years of experience building scalable React, Next.js, TypeScript, and REST API-driven web applications.",
-    "openGraphTitle": "Kanishk Chhabra - Software Development Engineer",
-    "openGraphDescription": "Portfolio for a full stack developer with React, Next.js, TypeScript, and REST API integration experience.",
+    "metaTitle": "Kanishk Chhabra - React.js Software Engineer | Delhi",
+    "metaDescription": "Kanishk Chhabra is a Delhi-based React.js software engineer with 3+ years of experience shipping high-performance TypeScript applications and scalable frontend systems.",
+    "openGraphTitle": "Kanishk Chhabra - React.js Software Engineer",
+    "openGraphDescription": "Portfolio showcasing React, TypeScript, performance optimization, and enterprise-grade product delivery experience.",
     "navLinks": [
       { "label": "About", "href": "#about" },
       { "label": "Experience", "href": "#experience" },
       { "label": "Projects", "href": "#projects" },
       { "label": "Contact", "href": "#contact" }
     ],
-    "heroEyebrow": "Software Development Engineer - Delhi, India",
-    "typedLine": "Full stack web application builder",
+    "heroEyebrow": "React.js Software Engineer - Delhi, India",
+    "typedLine": "React engineer",
     "heroNotes": [
-      "I build web applications that feel fast, intentional, and reliable. Currently working on wealth management platforms that handle portfolios worth Rs 100 Cr+.",
-      "Outside work I've been exploring how AI fits into the design and engineering workflow. Faster prototyping, smarter iteration, less time on the boring parts."
+      "I build high-performance React and TypeScript applications that feel fast, intentional, and reliable.",
+      "My work spans enterprise wealth platforms, analytics products, and modern frontend systems where performance and maintainability matter."
     ],
     "aboutEyebrow": "About",
-    "aboutHeading": "Three years of shipping and still raising the bar.",
+    "aboutHeading": "Three years of shipping high-impact frontend products.",
     "aboutParagraphs": [
-      "I'm a software development engineer who genuinely cares about the craft. Clean component architecture, tight performance budgets, API-driven workflows, and UIs that don't just work but feel right. I've spent the last three years building production systems in the wealth and fintech space, working across React, Next.js, TypeScript, and REST APIs on codebases where real money moves every day.",
-      "I think the best web application work sits right at the intersection of engineering rigour and design sensibility. Whether I'm refactoring a 200K-line codebase or shipping something new from scratch, I try to bring the same level of care to both."
+      "I’m a React.js engineer who cares deeply about the quality of what ships. I focus on clean component architecture, strong performance budgets, modern state management, and interfaces that feel intentional and reliable. Over the last three years, I’ve built production systems in wealth management, fintech, and analytics products using React, Next.js, TypeScript, and REST APIs.",
+      "I enjoy the balance between engineering discipline and product thinking. Whether I’m refactoring large codebases, integrating backend services, or building new features from scratch, I aim to bring the same level of care to scalability, maintainability, and long-term product impact."
     ],
     "signals": ["Delhi, India", "SDE-1 - Pantelwar", "3+ years", "Open to opportunities"],
     "skillsEyebrow": "Tech I work with",
     "experienceEyebrow": "Experience",
     "experienceHeading": "Built in production. Not just side projects.",
     "projectsEyebrow": "Projects",
-    "projectsHeading": "Products I've shaped end to end.",
-    "projectsIntro": "Wealth management, retail investing, analytics, and commerce. Built for real users with real stakes.",
+    "projectsHeading": "Products I’ve helped build and scale.",
+    "projectsIntro": "Wealth management, retail investing, analytics, and commerce—built for real users, real stakes, and measurable outcomes.",
     "contactEyebrow": "Contact",
     "contactHeading": "Let's build something worth shipping.",
     "contactIntro": "I'm open to the right opportunity. That could be a product-focused software engineering role, a team working on something genuinely interesting, or a freelance project worth putting real effort into. Drop a line and let's talk.",
@@ -100,12 +100,12 @@
     {
       "label": "Frontend",
       "icon": "FE",
-      "items": ["React.js", "Next.js", "TypeScript", "JavaScript (ES6+)", "RTK Query", "Tanstack Query (React Query)", "Redux", "Redux Toolkit", "Context API", "Zustand", "Tailwind CSS", "HTML5", "CSS3", "Material UI", "ShadCN", "GSAP", "Responsive UI Development"]
+      "items": ["React.js", "Next.js", "TypeScript", "JavaScript (ES6+)", "React Hooks", "Redux Toolkit", "Zustand", "TanStack Query", "Context API", "Tailwind CSS", "Material UI", "ShadCN UI", "Responsive UI Development"]
     },
     {
       "label": "Backend / APIs",
       "icon": "API",
-      "items": ["Python", "REST APIs", "Node.js", "API Integration", "Postman"]
+      "items": ["Node.js", "REST APIs", "API Integration", "Postman", "SQL"]
     },
     {
       "label": "Database",
@@ -115,17 +115,17 @@
     {
       "label": "Tools & DevOps",
       "icon": "OPS",
-      "items": ["Git", "GitHub", "Docker", "CI/CD Concepts", "Jira", "VS Code"]
+      "items": ["Git", "GitHub", "Docker", "CI/CD", "Turborepo", "Vite", "Webpack"]
     },
     {
       "label": "Methodologies",
       "icon": "SDLC",
-      "items": ["Agile Scrum", "SDLC", "Code Reviews", "Documentation", "Cross-functional Collaboration"]
+      "items": ["Agile/Scrum", "SDLC", "Code Reviews", "Documentation", "Cross-functional Collaboration"]
     },
     {
       "label": "Other",
       "icon": "CS",
-      "items": ["DSA", "Problem Solving", "Performance Optimization"]
+      "items": ["DSA", "Problem Solving", "Performance Optimization", "Code Splitting", "Lazy Loading"]
     }
   ],
   "experience": [
@@ -135,11 +135,11 @@
       "dates": "Jan 2025 - Present",
       "location": "On-Site, India",
       "bullets": [
-        "Led UI development for scalable wealth and investment management features across 5 major React projects.",
-        "Collaborated with backend teams to integrate REST APIs, authentication workflows, and secure client-server communication across multiple applications.",
-        "Integrated 10+ reusable React components, reducing UI development cycles in upcoming releases.",
-        "Maintained and optimized a 200,000+ line codebase, improving performance, maintainability, scalability, and overall application stability.",
-        "Participated in code reviews, sprint planning, production deployments, debugging, and end-to-end SDLC activities across multiple product releases."
+        "Owned end-to-end delivery of complex React + TypeScript modules across five enterprise wealth management products.",
+        "Cut UI development time by 80% by building and maintaining shared component systems used across multiple applications.",
+        "Raised performance of a 200K+ LOC React codebase through rendering improvements, better state handling, and focused refactoring.",
+        "Partnered with backend teams to design and integrate REST APIs with secure authentication flows.",
+        "Introduced reusable modules in a Turborepo monorepo that improved code sharing and long-term maintainability."
       ]
     },
     {
@@ -148,10 +148,10 @@
       "dates": "Sep 2023 - Jan 2025",
       "location": "Noida, India",
       "bullets": [
-        "Developed data-driven dashboards and workflow automation features improving portfolio monitoring, reporting, and user decision-making.",
-        "Integrated multiple REST APIs and optimized frontend data-fetching workflows for improved responsiveness and user experience.",
-        "Built client-status tracking, role-based access, advisor dashboards, and improved onboarding UX.",
-        "Collaborated in Agile Scrum with daily standups, sprint planning, and production releases."
+        "Shipped React dashboards and workflow automation features for portfolio monitoring used by advisors daily.",
+        "Drove a 30% gain in application responsiveness by optimizing data fetching and state management.",
+        "Created advisor dashboards, onboarding flows, and UI components that were adopted across the product.",
+        "Delivered features on schedule through close collaboration with product and backend teams."
       ]
     },
     {
@@ -160,7 +160,7 @@
       "dates": "Mar 2023 - Sep 2023",
       "location": "Noida, India",
       "bullets": [
-        "Trained in HTML, CSS, JavaScript, React, DBMS, SQL, Java, Hibernate, and Spring basics.",
+        "Built a strong base in HTML, CSS, JavaScript, React, DBMS, SQL, Java, Hibernate, and Spring basics.",
         "Solved 100+ DSA problems, strengthening algorithms and problem-solving skills."
       ]
     }
@@ -194,35 +194,35 @@
   "projects": [
     {
       "title": "Ravokk",
-      "description": "Modern e-commerce clothing platform with product browsing, state management, responsive UI components, and database-driven workflows.",
+      "description": "Built a complete e-commerce clothing platform using Next.js, TypeScript, Zustand, and PostgreSQL with clean component architecture and responsive design.",
       "stack": ["Next.js", "TypeScript", "Zustand", "Tailwind CSS", "PostgreSQL"],
-      "highlight": "Built a performance-focused personal commerce platform with reusable architecture and seamless cross-device UX.",
+      "highlight": "Focused on reusable architecture, state management, and a polished shopping experience across devices.",
       "link": "https://ravokk.vercel.app/",
       "type": "Personal project"
     },
     {
       "title": "OmnaData Insights and Analysis",
-      "description": "Research and analytics platform with role-based access, API-driven data workflows, and subscription-based report access.",
+      "description": "Developed a research and analytics platform featuring role-based access and subscription-based report workflows.",
       "stack": ["React", "Next.js", "Tailwind CSS", "REST APIs"],
-      "highlight": "Implemented analyst management workflows for creating, updating, and controlling structured report insights.",
+      "highlight": "Created management flows that let analysts create, update, and manage research reports efficiently while collaborating with backend teams on API integration and structured data handling.",
       "dates": "Oct 2025 - Present",
       "link": "https://www.omnadata.com/",
       "type": "Client project"
     },
     {
       "title": "Fingyani Platform",
-      "description": "Retail investment bucket UI for NSE/BSE markets, similar to Smallcase, with an RIA portal for advisor-client coordination.",
-      "stack": ["React", "Next.js", "Material UI", "Redux", "REST APIs"],
-      "highlight": "Improved platform responsiveness by 30% and reduced advisor-client coordination time by 20%.",
+      "description": "Built React interfaces for custom investment buckets across NSE and BSE markets, with RIA workflows for advisor-client coordination.",
+      "stack": ["React", "Next.js", "Material UI", "Redux Toolkit", "REST APIs"],
+      "highlight": "Delivered a 30% improvement in responsiveness through optimized state management and API workflows, and reduced advisor-client coordination time by 20%.",
       "dates": "Sep 2023 - Present",
       "link": "https://fingyani.com/",
       "type": "Company project"
     },
     {
       "title": "360 ONE RM Workspace",
-      "description": "Wealth management dashboard used by Relationship Managers handling portfolios worth Rs 100 Cr+.",
-      "stack": ["React", "Next.js", "Redux", "REST APIs", "Material UI"],
-      "highlight": "Increased RM productivity by 25% with visual analytics and instant access workflows; reduced UI change effort by 80% using reusable components.",
+      "description": "Built enterprise dashboards for Relationship Managers handling portfolios exceeding ₹100 Cr.",
+      "stack": ["React", "Next.js", "Redux Toolkit", "REST APIs", "Material UI"],
+      "highlight": "Increased RM productivity by 25% with clearer analytics views and streamlined workflows, and reduced UI development effort by 80% by designing shared component libraries.",
       "dates": "Jan 2024 - Jun 2025",
       "link": "https://www.360.one/wealth/home",
       "type": "Client project",
@@ -231,10 +231,10 @@
   ],
   "stats": [
     { "label": "RM productivity improvement", "value": 25, "suffix": "%" },
-    { "label": "Reduction in UI development effort", "value": 40, "suffix": "%" },
-    { "label": "Improvement in platform responsiveness", "value": 30, "suffix": "%" },
-    { "label": "Reduction in UI change effort", "value": 80, "suffix": "%" },
-    { "label": "Lines of codebase maintained", "value": 200, "suffix": "K+" },
-    { "label": "Reusable React components integrated", "value": 10, "suffix": "+" }
+    { "label": "UI development time reduced", "value": 80, "suffix": "%" },
+    { "label": "Application responsiveness gained", "value": 30, "suffix": "%" },
+    { "label": "Enterprise codebase scale", "value": 200, "suffix": "K+ LOC" },
+    { "label": "Shared component systems built", "value": 5, "suffix": "+" },
+    { "label": "Monorepo modules introduced", "value": 10, "suffix": "+" }
   ]
 }

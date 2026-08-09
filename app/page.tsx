@@ -439,7 +439,13 @@ export default function Home() {
                 {content.primaryActionLabel}
               </a>
               {profile.resumeHref ? (
-                <a href={profile.resumeHref} target="_blank" rel="noreferrer" className="secondary-action">
+                <a
+                  href={profile.resumeHref}
+                  download="Kanishk-Chhabra-Resume.pdf"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="secondary-action"
+                >
                   {content.resumeActionLabel}
                 </a>
               ) : null}
